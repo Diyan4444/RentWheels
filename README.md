@@ -4,7 +4,7 @@
 
 RentWheels is an automotive rental platform for Mumbai, bringing five distinct vehicle categories — cars, motorcycles, scooters, executive coaches, and commercial trucks — into a unified browsing and booking enquiry experience. Customers can select schedules, review transparent indicative 24-hour rates, stage multi-vehicle trips, and submit a single consolidated enquiry.
 
-- **Live Website:** [wheel-rent.netlify.app](https://wheel-rent.netlify.app/)
+- **Live Website:** [wheel-rent.netlify.app](https://rentwheels-livid.vercel.app/)
 - **GitHub Repository:** [github.com/Diyan4444/RentWheels](https://github.com/Diyan4444/RentWheels)
 
 ---
