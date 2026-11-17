@@ -46,9 +46,8 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     <!-- Floating Glass Pill Header -->
     <header class="site-header" role="banner">
       <div class="header-pill">
-        <!-- Brand Wordmark & Logo -->
+        <!-- Brand Wordmark -->
         <a href="/" class="brand-link" aria-label="RentWheels Home">
-          <span class="brand-glow-dot" aria-hidden="true"></span>
           <span class="brand-wordmark">{siteConfig.name}</span>
         </a>
 
@@ -63,8 +62,8 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
 
         <!-- Actions: Trip Badge Counter & Contact CTA -->
         <div class="header-actions">
-          <a href="/trip" class="trip-pill-btn" id="headerTripBtn" aria-label="View your trip enquiry staging">
-            <svg class="trip-pill-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <a href="/trip" class="trip-pill-btn" id="headerTripBtn" aria-label="View trip staging">
+            <svg class="nav-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="16" y1="2" x2="16" y2="6"></line>
               <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -74,7 +73,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
             <span class="trip-count-badge" id="headerTripCount" aria-hidden="true" style="display: none;">0</span>
           </a>
 
-          <a href={`mailto:${siteConfig.contact.email}`} class="contact-pill-btn" aria-label="Contact RentWheels via email">
+          <a href={`mailto:${siteConfig.contact.email}`} class="contact-pill-btn" aria-label="Contact via email">
             <span>Enquire</span>
           </a>
         </div>
@@ -89,27 +88,24 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     <!-- Accessible Toast Live Region (C1) -->
     <div id="toastRegion" class="toast-region" role="status" aria-live="polite"></div>
 
-    <!-- Site Footer Landmark (V8) -->
+    <!-- Site Footer Landmark -->
     <footer class="site-footer" role="contentinfo">
       <div class="container footer-container">
         <div class="footer-columns">
           <div class="footer-brand">
-            <div class="footer-brand-header">
-              <span class="brand-glow-dot" aria-hidden="true"></span>
-              <span class="brand-wordmark">{siteConfig.name}</span>
-            </div>
-            <p class="footer-tagline body-6">
-              Cinematic automotive rentals across cars, bikes, scooters, buses and trucks in Mumbai with transparent 24-hour billing.
+            <span class="brand-wordmark">{siteConfig.name}</span>
+            <p class="footer-tagline">
+              Curated vehicle rentals across cars, motorcycles, scooters, coaches, and trucks in Mumbai with transparent 24-hour billing.
             </p>
             {siteConfig.contact.email && (
-              <p class="footer-contact caption-2">
+              <p class="footer-contact">
                 Enquiries: <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
               </p>
             )}
           </div>
 
           <div class="footer-nav-col">
-            <h2 class="footer-col-title title-4">Fleet</h2>
+            <span class="footer-col-title">Fleet</span>
             <ul role="list">
               <li><a href="/fleet/cars">Cars</a></li>
               <li><a href="/fleet/bikes">Bikes</a></li>
@@ -120,28 +116,28 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
           </div>
 
           <div class="footer-nav-col">
-            <h2 class="footer-col-title title-4">Company</h2>
+            <span class="footer-col-title">Company</span>
             <ul role="list">
               <li><a href="/about">About</a></li>
               <li><a href="/faq">FAQ</a></li>
-              <li><a href="/fleet">All Vehicles</a></li>
+              <li><a href="/fleet">Complete Fleet</a></li>
             </ul>
           </div>
 
           <div class="footer-nav-col">
-            <h2 class="footer-col-title title-4">Legal</h2>
+            <span class="footer-col-title">Terms & Privacy</span>
             <ul role="list">
-              <li><a href="/terms">Terms</a></li>
-              <li><a href="/privacy">Privacy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/privacy">Privacy Notice</a></li>
             </ul>
           </div>
         </div>
 
         <div class="footer-bottom">
-          <p class="copyright caption-2">&copy; {currentYear} {siteConfig.name}. All rights reserved.</p>
+          <p class="copyright">&copy; {currentYear} {siteConfig.name}. All rights reserved.</p>
           {siteConfig.demoMode && (
-            <p class="demo-notice caption-5">
-              Demonstration mode active. Requests are received via Netlify Forms but no instant bookings or online payments are processed.
+            <p class="demo-notice">
+              Demonstration mode active. Booking requests are submitted through Netlify Forms; online payments and instant reservations are not processed.
             </p>
           )}
         </div>
@@ -152,7 +148,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
 
 <style>
   /* ==========================================================================
-     Floating Glass Pill Header
+     Floating Glass Pill Header — Refined Architectural Proportions
      ========================================================================== */
   .site-header {
     position: sticky;
@@ -165,50 +161,41 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
 
   .header-pill {
     pointer-events: auto;
-    max-width: 1080px;
+    max-width: 960px;
     margin: 0 auto;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-200);
-    background: var(--surface-glass-nav);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-    border: 1px solid var(--border-glass);
+    background: rgba(4, 25, 39, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(120, 210, 230, 0.14);
     border-radius: var(--radius-full);
-    padding: 8px 18px;
-    box-shadow: 0 12px 36px rgba(4, 21, 34, 0.65), 0 0 20px rgba(18, 184, 208, 0.12);
+    padding: 0 8px 0 20px;
+    box-shadow: 0 10px 32px rgba(2, 10, 18, 0.5), 0 0 16px rgba(18, 184, 208, 0.08);
     transition: border-color var(--duration-color) var(--ease-base),
       box-shadow var(--duration-color) var(--ease-base);
   }
 
   .header-pill:hover {
-    border-color: rgba(120, 210, 230, 0.28);
-    box-shadow: 0 14px 40px rgba(4, 21, 34, 0.75), 0 0 26px rgba(18, 184, 208, 0.18);
+    border-color: rgba(120, 210, 230, 0.25);
+    box-shadow: 0 12px 36px rgba(2, 10, 18, 0.65), 0 0 20px rgba(18, 184, 208, 0.12);
   }
 
   /* Brand */
   .brand-link {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
     text-decoration: none;
     color: var(--text-primary);
   }
 
-  .brand-glow-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--color-cyan-bright);
-    box-shadow: 0 0 10px var(--color-cyan-bright);
-    flex-shrink: 0;
-  }
-
   .brand-wordmark {
     font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 19px;
+    font-weight: 600;
+    font-size: 16px;
     letter-spacing: -0.025em;
     color: var(--text-primary);
   }
@@ -218,7 +205,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     display: none;
   }
 
-  @media (min-width: 680px) {
+  @media (min-width: 640px) {
     .desktop-nav {
       display: block;
     }
@@ -227,57 +214,55 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
   .nav-list {
     display: flex;
     align-items: center;
-    gap: var(--space-300);
+    gap: 28px;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .nav-link {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary);
     text-decoration: none;
     transition: color var(--duration-color) var(--ease-base);
-    position: relative;
-    padding: 4px 2px;
+    letter-spacing: -0.01em;
   }
 
   .nav-link:hover {
     color: var(--text-primary);
-    text-shadow: 0 0 12px rgba(121, 226, 236, 0.45);
   }
 
   /* Header Actions */
   .header-actions {
     display: flex;
     align-items: center;
-    gap: var(--space-100);
+    gap: 8px;
   }
 
   .trip-pill-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(16, 42, 61, 0.7);
-    border: 1px solid var(--border-glass);
+    gap: 6px;
+    background: rgba(16, 42, 61, 0.6);
+    border: 1px solid rgba(120, 210, 230, 0.12);
     border-radius: var(--radius-full);
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-primary);
+    padding: 0 12px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
     text-decoration: none;
-    min-height: 38px;
     transition: all var(--duration-color) var(--ease-base);
   }
 
   .trip-pill-btn:hover {
     background: rgba(7, 83, 106, 0.5);
-    border-color: var(--color-cyan-bright);
-    box-shadow: 0 0 14px rgba(18, 184, 208, 0.25);
+    color: var(--text-primary);
+    border-color: rgba(120, 210, 230, 0.25);
   }
 
-  .trip-pill-icon {
+  .nav-icon {
     color: var(--color-cyan-bright);
   }
 
@@ -287,11 +272,11 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     justify-content: center;
     background-color: var(--action-primary);
     color: #ffffff;
-    font-size: 11px;
-    font-weight: 700;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
     border-radius: var(--radius-full);
   }
 
@@ -300,63 +285,64 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     align-items: center;
     justify-content: center;
     background: var(--action-primary);
-    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-full);
-    padding: 6px 16px;
-    font-size: 13px;
+    padding: 0 15px;
+    height: 32px;
+    font-size: 12px;
     font-weight: 600;
     color: #ffffff;
     text-decoration: none;
-    min-height: 38px;
-    box-shadow: var(--glow-blue-cta);
+    box-shadow: 0 2px 10px rgba(36, 99, 235, 0.35);
     transition: all var(--duration-color) var(--ease-base);
   }
 
   .contact-pill-btn:hover {
     background: var(--action-primary-hover);
-    box-shadow: 0 4px 20px rgba(36, 99, 235, 0.55);
-    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(36, 99, 235, 0.5);
   }
 
   /* ==========================================================================
-     Footer Styles
+     Site Footer — Minimalist Architectural Grounding
      ========================================================================== */
   .site-footer {
-    background-color: var(--surface-footer);
-    border-top: 1px solid var(--border-primary);
-    padding: var(--space-800) 0 var(--space-500);
+    background-color: #030a10;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: var(--space-800) 0 var(--space-600);
     margin-top: var(--space-900);
   }
 
   .footer-columns {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-400);
+    gap: var(--space-500);
     margin-bottom: var(--space-600);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .footer-columns {
       grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-600);
     }
   }
 
   .footer-brand {
     display: flex;
     flex-direction: column;
-    gap: var(--space-100);
-  }
-
-  .footer-brand-header {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    gap: var(--space-150, 12px);
   }
 
   .footer-tagline {
     color: var(--text-tertiary);
-    max-width: 320px;
+    font-size: 13px;
     line-height: 1.6;
+    max-width: 320px;
+    margin: 0;
+  }
+
+  .footer-contact {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin: 0;
   }
 
   .footer-contact a {
@@ -364,38 +350,39 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     text-decoration: none;
   }
 
-  .footer-contact a:hover {
-    text-decoration: underline;
-  }
-
   .footer-col-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--text-primary);
     margin-bottom: var(--space-150, 12px);
+    display: block;
   }
 
   .footer-nav-col ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--space-75);
+    gap: 8px;
     padding: 0;
     margin: 0;
   }
 
   .footer-nav-col a {
     color: var(--text-tertiary);
-    font-size: 14px;
+    font-size: 13px;
     text-decoration: none;
     transition: color var(--duration-color) var(--ease-base);
   }
 
   .footer-nav-col a:hover {
-    color: var(--color-cyan-bright);
+    color: var(--text-primary);
   }
 
   .footer-bottom {
-    padding-top: var(--space-300);
-    border-top: 1px solid var(--border-primary);
+    padding-top: var(--space-400);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
     gap: var(--space-100);
@@ -404,12 +391,16 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
 
   .copyright {
     color: var(--text-tertiary);
+    font-size: 12px;
+    margin: 0;
   }
 
   .demo-notice {
-    color: var(--text-tertiary);
-    max-width: 640px;
+    color: rgba(169, 189, 204, 0.6);
+    font-size: 11px;
     line-height: 1.5;
+    max-width: 680px;
+    margin: 0;
   }
 </style>
 

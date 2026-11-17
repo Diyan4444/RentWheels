@@ -8,6 +8,14 @@ interface Props {
 
 const { vehicle } = Astro.props;
 const mainImage = vehicle.images[0];
+
+const categoryLabels: Record<string, string> = {
+  car: 'Car',
+  bike: 'Motorcycle',
+  scooter: 'Scooter',
+  bus: 'Coach & Bus',
+  truck: 'Truck & Pickup',
+};
 ---
 
 <article class="vehicle-card" data-slug={vehicle.slug} data-category={vehicle.category}>
@@ -23,17 +31,17 @@ const mainImage = vehicle.images[0];
         class="card-image"
       />
     </a>
-    <span class="category-badge caption-4">{vehicle.category}</span>
   </div>
 
   <div class="card-content">
     <div class="card-header">
-      <h3 class="title-2 vehicle-title">
+      <span class="category-meta">{categoryLabels[vehicle.category] || vehicle.category}</span>
+      <h3 class="vehicle-title">
         <a href={`/vehicles/${vehicle.slug}`} class="title-link">{vehicle.name}</a>
       </h3>
     </div>
 
-    <p class="caption-2 specs-line">
+    <p class="specs-line">
       <span>{vehicle.seats} Seats</span>
       <span class="bullet" aria-hidden="true">&bull;</span>
       <span>{vehicle.specs.fuelType}</span>
@@ -53,14 +61,14 @@ const mainImage = vehicle.images[0];
 
     <div class="card-footer">
       <div class="price-container">
-        <span class="price-amount title-2">{formatINR(vehicle.estimatedRatePer24h)}</span>
-        <span class="price-period caption-3">per 24 hours</span>
+        <span class="price-amount">{formatINR(vehicle.estimatedRatePer24h)}</span>
+        <span class="price-period">per 24 hours</span>
       </div>
 
       <div class="card-actions">
         <button
           type="button"
-          class="btn-add-trip button-sm"
+          class="btn-add-trip"
           data-slug={vehicle.slug}
           aria-label={`Add ${vehicle.name} to trip`}
         >
@@ -73,21 +81,19 @@ const mainImage = vehicle.images[0];
 
 <style>
   .vehicle-card {
-    background: var(--surface-glass-card);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-glass);
+    background: rgba(11, 29, 43, 0.55);
+    border: 1px solid rgba(120, 210, 230, 0.1);
     border-radius: var(--radius-16);
     padding: 10px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 24px rgba(4, 21, 34, 0.45);
     transition: all var(--duration-color) var(--ease-base);
   }
 
   .vehicle-card:hover {
-    border-color: rgba(18, 184, 208, 0.35);
-    box-shadow: 0 12px 32px rgba(4, 21, 34, 0.65), 0 0 24px rgba(18, 184, 208, 0.12);
+    background: rgba(11, 29, 43, 0.8);
+    border-color: rgba(120, 210, 230, 0.28);
+    box-shadow: 0 14px 36px rgba(2, 10, 18, 0.5);
     transform: translateY(-2px);
   }
 
@@ -97,8 +103,7 @@ const mainImage = vehicle.images[0];
     aspect-ratio: 16 / 10;
     border-radius: var(--radius-12);
     overflow: hidden;
-    background: radial-gradient(circle at center, rgba(7, 83, 106, 0.3) 0%, rgba(7, 21, 34, 0.9) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(4, 21, 34, 0.8);
   }
 
   .image-link {
@@ -115,43 +120,36 @@ const mainImage = vehicle.images[0];
   }
 
   .vehicle-card:hover .card-image {
-    transform: scale(1.04);
-  }
-
-  .category-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(4, 25, 39, 0.82);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(120, 210, 230, 0.25);
-    color: var(--color-cyan-bright);
-    text-transform: uppercase;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    padding: 4px 10px;
-    border-radius: var(--radius-full);
+    transform: scale(1.03);
   }
 
   .card-content {
-    padding: var(--space-150, 12px) var(--space-100) var(--space-75);
+    padding: 14px 8px 6px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    gap: var(--space-75);
+    gap: 8px;
   }
 
   .card-header {
     display: flex;
     flex-direction: column;
+    gap: 2px;
+  }
+
+  .category-meta {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-cyan-bright);
   }
 
   .vehicle-title {
     color: var(--text-primary);
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     margin: 0;
   }
 
@@ -162,7 +160,7 @@ const mainImage = vehicle.images[0];
   }
 
   .title-link:hover {
-    color: var(--color-cyan-bright);
+    color: var(--color-cyan-ambient);
   }
 
   .specs-line {
@@ -171,12 +169,12 @@ const mainImage = vehicle.images[0];
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 12px;
     margin: 0;
   }
 
   .bullet {
-    color: rgba(120, 210, 230, 0.35);
+    color: rgba(120, 210, 230, 0.3);
   }
 
   .card-footer {
@@ -184,8 +182,8 @@ const mainImage = vehicle.images[0];
     align-items: flex-end;
     justify-content: space-between;
     margin-top: auto;
-    padding-top: var(--space-150, 12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
     gap: var(--space-100);
   }
 
@@ -196,24 +194,25 @@ const mainImage = vehicle.images[0];
 
   .price-amount {
     color: var(--text-primary);
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: -0.02em;
   }
 
   .price-period {
     color: var(--text-tertiary);
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .btn-add-trip {
-    background: rgba(16, 42, 61, 0.8);
-    border: 1px solid var(--border-glass);
-    color: var(--text-primary);
-    padding: 6px 14px;
+    background: rgba(16, 42, 61, 0.65);
+    border: 1px solid rgba(120, 210, 230, 0.14);
+    color: var(--text-secondary);
+    padding: 0 14px;
     border-radius: var(--radius-full);
-    min-height: 38px;
-    font-size: 13px;
-    font-weight: 600;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 500;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -222,17 +221,15 @@ const mainImage = vehicle.images[0];
   }
 
   .btn-add-trip:hover {
-    background: rgba(7, 83, 106, 0.6);
-    border-color: var(--color-cyan-bright);
-    color: #ffffff;
-    box-shadow: 0 0 14px rgba(18, 184, 208, 0.25);
+    background: rgba(7, 83, 106, 0.5);
+    border-color: rgba(120, 210, 230, 0.3);
+    color: var(--text-primary);
   }
 
   .btn-add-trip.is-added {
     background: var(--action-primary);
     color: #ffffff;
     border-color: var(--action-primary);
-    box-shadow: var(--glow-blue-cta);
   }
 </style>
 
@@ -253,7 +250,6 @@ const mainImage = vehicle.images[0];
         btn.classList.remove('is-added');
       }
 
-      // Avoid attaching multiple event listeners
       if (btn.getAttribute('data-listener-attached') === 'true') return;
       btn.setAttribute('data-listener-attached', 'true');
 
