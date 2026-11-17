@@ -23,29 +23,29 @@ const mainImage = vehicle.images[0];
         class="card-image"
       />
     </a>
+    <span class="category-badge caption-4">{vehicle.category}</span>
   </div>
 
   <div class="card-content">
     <div class="card-header">
-      <span class="category-badge caption-3">{vehicle.category}</span>
       <h3 class="title-2 vehicle-title">
         <a href={`/vehicles/${vehicle.slug}`} class="title-link">{vehicle.name}</a>
       </h3>
     </div>
 
     <p class="caption-2 specs-line">
-      <span>💺 {vehicle.seats} Seats</span>
-      <span>&bull;</span>
+      <span>{vehicle.seats} Seats</span>
+      <span class="bullet" aria-hidden="true">&bull;</span>
       <span>{vehicle.specs.fuelType}</span>
       {vehicle.efficiency && (
         <>
-          <span>&bull;</span>
+          <span class="bullet" aria-hidden="true">&bull;</span>
           <span>{vehicle.efficiency.value} {vehicle.efficiency.unit}</span>
         </>
       )}
       {vehicle.evSpecs && (
         <>
-          <span>&bull;</span>
+          <span class="bullet" aria-hidden="true">&bull;</span>
           <span>{vehicle.evSpecs.claimedRange}</span>
         </>
       )}
@@ -53,8 +53,8 @@ const mainImage = vehicle.images[0];
 
     <div class="card-footer">
       <div class="price-container">
-        <span class="price-amount title-1">{formatINR(vehicle.estimatedRatePer24h)}</span>
-        <span class="price-period caption-2">per 24 hours</span>
+        <span class="price-amount title-2">{formatINR(vehicle.estimatedRatePer24h)}</span>
+        <span class="price-period caption-3">per 24 hours</span>
       </div>
 
       <div class="card-actions">
@@ -73,26 +73,38 @@ const mainImage = vehicle.images[0];
 
 <style>
   .vehicle-card {
-    background-color: var(--surface-primary-subtle);
-    border: 1px solid var(--border-primary);
+    background: var(--surface-glass-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-16);
-    padding: var(--space-75);
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    transition: border-color var(--duration-color) var(--ease-base);
+    box-shadow: 0 8px 24px rgba(4, 21, 34, 0.45);
+    transition: all var(--duration-color) var(--ease-base);
   }
 
   .vehicle-card:hover {
-    border-color: var(--border-control);
+    border-color: rgba(18, 184, 208, 0.35);
+    box-shadow: 0 12px 32px rgba(4, 21, 34, 0.65), 0 0 24px rgba(18, 184, 208, 0.12);
+    transform: translateY(-2px);
   }
 
   .card-image-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 2;
-    border-radius: var(--radius-8);
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-12);
     overflow: hidden;
-    background-color: var(--surface-secondary);
+    background: radial-gradient(circle at center, rgba(7, 83, 106, 0.3) 0%, rgba(7, 21, 34, 0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .card-image {
@@ -103,41 +115,54 @@ const mainImage = vehicle.images[0];
   }
 
   .vehicle-card:hover .card-image {
-    transform: scale(1.02);
+    transform: scale(1.04);
+  }
+
+  .category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(4, 25, 39, 0.82);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(120, 210, 230, 0.25);
+    color: var(--color-cyan-bright);
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
   }
 
   .card-content {
-    padding: var(--space-200);
+    padding: var(--space-150, 12px) var(--space-100) var(--space-75);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    gap: var(--space-100);
+    gap: var(--space-75);
   }
 
   .card-header {
     display: flex;
     flex-direction: column;
-    gap: var(--space-50);
-  }
-
-  .category-badge {
-    color: var(--action-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
   .vehicle-title {
     color: var(--text-primary);
-    min-height: 28px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
   }
 
   .title-link {
     color: inherit;
+    text-decoration: none;
     transition: color var(--duration-color) var(--ease-base);
   }
 
   .title-link:hover {
-    color: var(--action-primary);
+    color: var(--color-cyan-bright);
   }
 
   .specs-line {
@@ -145,7 +170,13 @@ const mainImage = vehicle.images[0];
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-50);
+    gap: 6px;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .bullet {
+    color: rgba(120, 210, 230, 0.35);
   }
 
   .card-footer {
@@ -153,8 +184,8 @@ const mainImage = vehicle.images[0];
     align-items: flex-end;
     justify-content: space-between;
     margin-top: auto;
-    padding-top: var(--space-200);
-    border-top: 1px solid var(--border-primary);
+    padding-top: var(--space-150, 12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
     gap: var(--space-100);
   }
 
@@ -165,35 +196,43 @@ const mainImage = vehicle.images[0];
 
   .price-amount {
     color: var(--text-primary);
+    font-weight: 700;
+    font-size: 18px;
   }
 
   .price-period {
     color: var(--text-tertiary);
+    font-size: 12px;
   }
 
   .btn-add-trip {
-    background-color: var(--surface-secondary);
-    border: 1px solid var(--border-control);
+    background: rgba(16, 42, 61, 0.8);
+    border: 1px solid var(--border-glass);
     color: var(--text-primary);
-    padding: var(--space-75) var(--space-150, 12px);
-    border-radius: var(--radius-8);
-    min-height: 44px;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background-color var(--duration-color) var(--ease-base),
-      border-color var(--duration-color) var(--ease-base);
+    transition: all var(--duration-color) var(--ease-base);
   }
 
   .btn-add-trip:hover {
-    background-color: var(--surface-secondary-subtle);
-    border-color: var(--action-primary);
+    background: rgba(7, 83, 106, 0.6);
+    border-color: var(--color-cyan-bright);
+    color: #ffffff;
+    box-shadow: 0 0 14px rgba(18, 184, 208, 0.25);
   }
 
   .btn-add-trip.is-added {
-    background-color: var(--action-primary);
-    color: var(--text-inverted);
+    background: var(--action-primary);
+    color: #ffffff;
     border-color: var(--action-primary);
+    box-shadow: var(--glow-blue-cta);
   }
 </style>
 
@@ -209,11 +248,20 @@ const mainImage = vehicle.images[0];
       if (isInTrip(slug)) {
         btn.textContent = 'In your trip';
         btn.classList.add('is-added');
+      } else {
+        btn.textContent = 'Add to trip';
+        btn.classList.remove('is-added');
       }
+
+      // Avoid attaching multiple event listeners
+      if (btn.getAttribute('data-listener-attached') === 'true') return;
+      btn.setAttribute('data-listener-attached', 'true');
 
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        const res = addToTrip(slug);
+        const currentSlug = btn.getAttribute('data-slug');
+        if (!currentSlug) return;
+        const res = addToTrip(currentSlug);
         showToast(res.message);
         if (res.success) {
           btn.textContent = 'In your trip';

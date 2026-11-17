@@ -1,5 +1,5 @@
 /* ==========================================================================
-   RentWheels Base CSS Reset & Accessibility Primitives
+   RentWheels Base CSS Reset & Primitives — Midnight Electric
    ========================================================================== */
 
 *,
@@ -15,6 +15,7 @@ html {
   -webkit-text-size-adjust: 100%;
   color-scheme: dark;
   scroll-behavior: smooth;
+  background-color: var(--surface-primary);
 }
 
 body {
@@ -30,7 +31,11 @@ body {
   position: relative;
 }
 
-/* Remove default image/media inline spacing */
+::selection {
+  background-color: var(--color-cyan-glow);
+  color: var(--color-midnight-base);
+}
+
 img,
 picture,
 video,
@@ -41,7 +46,6 @@ svg {
   height: auto;
 }
 
-/* Reset buttons and inputs */
 input,
 button,
 textarea,
@@ -70,7 +74,7 @@ a {
 
 /* Accessible Focus Ring */
 :focus-visible {
-  outline: 2px solid var(--action-primary-hover);
+  outline: 2px solid var(--color-cyan-bright);
   outline-offset: 2px;
 }
 
@@ -80,7 +84,7 @@ a {
   top: -9999px;
   left: var(--space-200);
   background-color: var(--action-primary);
-  color: var(--text-inverted);
+  color: #ffffff;
   padding: var(--space-75) var(--space-200);
   border-radius: var(--radius-8);
   font-weight: 600;
@@ -95,7 +99,7 @@ a {
 /* Container Utility */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
   margin-left: auto;
   margin-right: auto;
   padding-left: var(--space-200);

@@ -5,115 +5,243 @@ import { vehicles } from '../data/vehicles';
 import { formatINR } from '../scripts/pricing';
 
 const featuredVehicles = vehicles.filter((v) => v.featured);
-const heroVehicle = vehicles.find((v) => v.slug === 'toyota-rav4-hybrid') || vehicles[0];
+const flagshipVehicle = vehicles.find((v) => v.slug === 'ford-mustang-gt') || vehicles[0];
 
 const categories = [
-  { key: 'car', name: 'Cars', slug: 'cars', count: 3, startingRate: 3100 },
-  { key: 'bike', name: 'Bikes', slug: 'bikes', count: 3, startingRate: 1300 },
-  { key: 'scooter', name: 'Scooters', slug: 'scooters', count: 3, startingRate: 1300 },
-  { key: 'bus', name: 'Buses', slug: 'buses', count: 3, startingRate: 16400 },
-  { key: 'truck', name: 'Trucks', slug: 'trucks', count: 3, startingRate: 8700 },
+  { key: 'car', name: 'Cars', slug: 'cars', count: 3, startingRate: 3100, icon: '🚗', desc: 'Sedans, crossovers, and performance coupes' },
+  { key: 'bike', name: 'Bikes', slug: 'bikes', count: 3, startingRate: 1300, icon: '🏍️', desc: 'Cruisers, adventure, and track bikes' },
+  { key: 'scooter', name: 'Scooters', slug: 'scooters', count: 3, startingRate: 1300, icon: '🛵', desc: 'Classic and modern city commuters' },
+  { key: 'bus', name: 'Buses', slug: 'buses', count: 3, startingRate: 16400, icon: '🚌', desc: 'Executive coaches and intercity transport' },
+  { key: 'truck', name: 'Trucks', slug: 'trucks', count: 3, startingRate: 8700, icon: '🚚', desc: 'Heavy haulers and dual-motor electric pickups' },
+];
+
+const mumbaiHubs = [
+  { value: 'mumbai-central', label: 'Mumbai Central (Railway Hub)' },
+  { value: 'bandra-west', label: 'Bandra West (Linking Road / Station)' },
+  { value: 'andheri-east', label: 'Andheri East (WEH Metro Hub)' },
+  { value: 'bkc', label: 'Bandra Kurla Complex (BKC Financial District)' },
+  { value: 'borivali-west', label: 'Borivali West (Link Road)' },
+  { value: 'airport-t2', label: 'CSMI Airport T2 (International / Domestic)' },
 ];
 ---
 
 <BaseLayout
-  title="RentWheels — Vehicle Rentals Across Mumbai | Cars, Bikes, Scooters, Buses, Trucks"
-  description="From a scooter to a bus, rent it with one request. Transparent 24-hour pricing across Mumbai, verified primary specs, and genuine booking enquiries."
+  title="RentWheels — Cinematic Vehicle Rentals Across Mumbai | Cars, Bikes, Scooters, Buses, Trucks"
+  description="Discover 15 verified vehicles across Mumbai with transparent 24-hour pricing. Rent cars, bikes, scooters, buses and trucks with one unified booking enquiry."
 >
-  <!-- 1. Hero Section (Classic Layout A) -->
+  <!-- ========================================================================
+       1. Cinematic Hero Section
+       ======================================================================== -->
   <section class="hero-section">
+    <!-- Ambient Cyan Glow Background Elements -->
+    <div class="ambient-glow ambient-glow-top" aria-hidden="true"></div>
+    <div class="ambient-glow ambient-glow-car" aria-hidden="true"></div>
+
     <div class="container hero-container">
-      <div class="hero-copy-col">
-        <h1 class="heading-1 hero-title">
-          From a scooter to a bus,<br />rent it with one request
-        </h1>
-        <p class="body-3 hero-subheading">
-          Pick your dates once and every vehicle shows its indicative price for your 24-hour rental periods. Compare options, shortlist what you like, and send a single booking enquiry.
-        </p>
+      <div class="hero-main-grid">
+        <!-- Hero Left Column: Copy & Actions -->
+        <div class="hero-copy-col">
+          <div class="hero-badge">
+            <span class="hero-badge-dot" aria-hidden="true"></span>
+            <span class="hero-badge-text">YOUR NEXT JOURNEY STARTS HERE</span>
+          </div>
 
-        <!-- Request Panel -->
-        <div class="request-panel">
-          <form id="heroRequestForm" class="panel-form" action="/fleet" method="GET">
-            <div class="panel-inputs-row">
-              <div class="panel-field">
-                <label for="heroPickupDate" class="caption-1">Pickup Date</label>
-                <input type="date" id="heroPickupDate" name="from" class="styled-input" />
-              </div>
-              <div class="panel-field">
-                <label for="heroReturnDate" class="caption-1">Return Date</label>
-                <input type="date" id="heroReturnDate" name="to" class="styled-input" />
-              </div>
-              <div class="panel-field">
-                <label for="heroVehicleType" class="caption-1">Vehicle Type</label>
-                <select id="heroVehicleType" name="type" class="styled-input">
-                  <option value="all">All Types (15)</option>
-                  <option value="car">Cars (3)</option>
-                  <option value="bike">Bikes (3)</option>
-                  <option value="scooter">Scooters (3)</option>
-                  <option value="bus">Buses (3)</option>
-                  <option value="truck">Trucks (3)</option>
-                </select>
-              </div>
+          <h1 class="hero-title">
+            Find the car that feels right for every journey.
+          </h1>
+
+          <p class="hero-subheading">
+            From daily city commutes to coastal highway cruises and group travel across Mumbai, discover verified vehicles with transparent 24-hour pricing and consolidated booking enquiries.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="/fleet" class="hero-btn-primary">
+              <span>Explore the fleet</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="#how-it-works" class="hero-btn-secondary">
+              <span>How it works</span>
+            </a>
+          </div>
+
+          <!-- Proof Line / Highlights -->
+          <div class="hero-highlights-row">
+            <div class="highlight-item">
+              <span class="highlight-val">15</span>
+              <span class="highlight-lbl">Verified vehicles</span>
             </div>
-
-            <button type="submit" class="btn-find-vehicle button-lg">
-              Find a vehicle
-            </button>
-          </form>
-        </div>
-
-        <p class="proof-line caption-1">
-          15 verified vehicles across 5 types in Mumbai, from ₹1,300 per 24 hours.
-        </p>
-      </div>
-
-      <div class="hero-image-col">
-        <div class="hero-image-frame">
-          <img
-            src={`/${heroVehicle.images[0].file}`}
-            alt={heroVehicle.images[0].alt}
-            width="600"
-            height="400"
-            loading="eager"
-            fetchpriority="high"
-            class="hero-img"
-          />
-          <div class="hero-img-badge caption-2">
-            <span>{heroVehicle.name}</span>
-            <span>&bull;</span>
-            <span>{formatINR(heroVehicle.estimatedRatePer24h)} / 24h</span>
+            <div class="highlight-divider" aria-hidden="true"></div>
+            <div class="highlight-item">
+              <span class="highlight-val">24h</span>
+              <span class="highlight-lbl">Period billing</span>
+            </div>
+            <div class="highlight-divider" aria-hidden="true"></div>
+            <div class="highlight-item">
+              <span class="highlight-val">₹0</span>
+              <span class="highlight-lbl">Upfront payment</span>
+            </div>
           </div>
         </div>
+
+        <!-- Hero Right Column: Large Flagship Vehicle Visual -->
+        <div class="hero-visual-col">
+          <div class="hero-car-wrapper">
+            <div class="hero-car-backdrop" aria-hidden="true"></div>
+            <img
+              src={`/${flagshipVehicle.images[0].file}`}
+              alt={flagshipVehicle.images[0].alt}
+              width="720"
+              height="450"
+              loading="eager"
+              fetchpriority="high"
+              class="hero-car-img"
+            />
+            <div class="hero-car-badge">
+              <span class="badge-accent-dot" aria-hidden="true"></span>
+              <div class="badge-text-group">
+                <span class="badge-name">{flagshipVehicle.name}</span>
+                <span class="badge-price">From {formatINR(flagshipVehicle.estimatedRatePer24h)} / 24h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           Compact Booking / Search Interface Strip
+           ==================================================================== -->
+      <div class="search-strip-panel">
+        <form id="heroSearchForm" class="search-strip-form" action="/fleet" method="GET">
+          <div class="strip-fields-grid">
+            <!-- 1. Pickup Location -->
+            <div class="strip-field">
+              <label for="pickupLocation" class="strip-label">
+                <span class="strip-label-icon">📍</span>
+                <span>Pickup Location</span>
+              </label>
+              <select id="pickupLocation" name="location" class="strip-select">
+                {mumbaiHubs.map((hub) => (
+                  <option value={hub.value}>{hub.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <!-- 2. Pickup Date -->
+            <div class="strip-field">
+              <label for="pickupDate" class="strip-label">
+                <span class="strip-label-icon">📅</span>
+                <span>Pickup Date</span>
+              </label>
+              <input type="date" id="pickupDate" name="from" class="strip-input" required />
+            </div>
+
+            <!-- 3. Pickup Time -->
+            <div class="strip-field">
+              <label for="pickupTime" class="strip-label">
+                <span class="strip-label-icon">⏰</span>
+                <span>Pickup Time</span>
+              </label>
+              <input type="time" id="pickupTime" name="pickupTime" value="10:00" class="strip-input" required />
+            </div>
+
+            <!-- 4. Return Date -->
+            <div class="strip-field">
+              <label for="returnDate" class="strip-label">
+                <span class="strip-label-icon">📅</span>
+                <span>Return Date</span>
+              </label>
+              <input type="date" id="returnDate" name="to" class="strip-input" required />
+            </div>
+
+            <!-- 5. Return Time -->
+            <div class="strip-field">
+              <label for="returnTime" class="strip-label">
+                <span class="strip-label-icon">⏰</span>
+                <span>Return Time</span>
+              </label>
+              <input type="time" id="returnTime" name="returnTime" value="10:00" class="strip-input" required />
+            </div>
+
+            <!-- 6. Submit Button -->
+            <div class="strip-action-field">
+              <button type="submit" class="strip-btn-submit" aria-label="Search vehicles">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span>Search</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic 24-Hour Rental Calculation Live Indicator -->
+          <div class="strip-duration-bar">
+            <span class="duration-icon">⚡</span>
+            <span id="heroDurationIndicator" class="duration-text">
+              Select pickup and return times to calculate 24-hour billing periods
+            </span>
+            <span class="duration-policy-tag">24h ceiling rule</span>
+          </div>
+        </form>
       </div>
     </div>
   </section>
 
-  <!-- 2. Browse by Type (Editorial Rows) -->
+  <!-- ========================================================================
+       2. Browse by Type (Cinematic Cards)
+       ======================================================================== -->
   <section class="section browse-section">
     <div class="container">
-      <h2 class="heading-2 section-heading">Browse by type</h2>
-      <div class="category-rows-list">
+      <div class="section-heading-block">
+        <span class="section-eyebrow">FLEET CATEGORIES</span>
+        <h2 class="heading-2 section-title">Browse by vehicle type</h2>
+        <p class="body-3 section-desc">
+          Compare 5 distinct vehicle classes in Mumbai, each backed by verified manufacturer specifications.
+        </p>
+      </div>
+
+      <div class="categories-grid">
         {categories.map((cat) => (
-          <a href={`/fleet/${cat.slug}`} class="category-row-item">
-            <span class="row-name title-1">{cat.name}</span>
-            <span class="row-count caption-1">{cat.count} vehicles</span>
-            <span class="row-rate caption-1">From {formatINR(cat.startingRate)} / 24h</span>
-            <span class="row-arrow" aria-hidden="true">&rarr;</span>
+          <a href={`/fleet/${cat.slug}`} class="category-card">
+            <div class="cat-card-header">
+              <span class="cat-icon" aria-hidden="true">{cat.icon}</span>
+              <span class="cat-count-badge caption-4">{cat.count} vehicles</span>
+            </div>
+            <h3 class="cat-name title-2">{cat.name}</h3>
+            <p class="cat-desc caption-2">{cat.desc}</p>
+            <div class="cat-footer">
+              <span class="cat-rate caption-2">From <strong>{formatINR(cat.startingRate)}</strong> / 24h</span>
+              <span class="cat-arrow" aria-hidden="true">&rarr;</span>
+            </div>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- 3. Featured Vehicles -->
+  <!-- ========================================================================
+       3. Featured Vehicles
+       ======================================================================== -->
   <section class="section featured-section">
     <div class="container">
       <div class="section-header-row">
         <div>
-          <h2 class="heading-2 section-heading">Featured vehicles</h2>
-          <p class="body-3 section-desc">Popular choices for trips, commutes, and group travel.</p>
+          <span class="section-eyebrow">CURATED SELECTION</span>
+          <h2 class="heading-2 section-title">Featured vehicles</h2>
+          <p class="body-3 section-desc">
+            Popular choices for daily commutes, weekend getaways, and special occasions.
+          </p>
         </div>
-        <a href="/fleet" class="see-all-link caption-1">See all 15 vehicles &rarr;</a>
+        <a href="/fleet" class="see-all-btn">
+          <span>See all 15 vehicles</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
 
       <div class="featured-grid">
@@ -124,225 +252,622 @@ const categories = [
     </div>
   </section>
 
-  <!-- 4. Problem & Solution Section -->
+  <!-- ========================================================================
+       4. Problem & Solution Section (Single Consolidated Request)
+       ======================================================================== -->
   <section class="section problem-section">
-    <div class="container problem-container">
-      <h2 class="heading-2 problem-title">
-        Renting for a group should not mean five separate enquiries.
-      </h2>
-      <p class="body-3 problem-body">
-        A family vacation, a corporate offsite, and a goods delivery require very different vehicles. RentWheels lists all five categories in one place, using identical 24-hour rental periods and a unified request form, so you describe your trip once.
-      </p>
+    <div class="container">
+      <div class="problem-card">
+        <div class="problem-glow" aria-hidden="true"></div>
+        <div class="problem-content">
+          <span class="problem-badge">THE RENTWHEELS ADVANTAGE</span>
+          <h2 class="heading-2 problem-title">
+            Renting for a complex journey should never require five separate enquiries.
+          </h2>
+          <p class="body-3 problem-body">
+            A family vacation, a corporate offsite, and event transport require very different vehicles. Traditional rental agencies force you to juggle multiple vendors, incompatible booking systems, and varying calendar-day definitions. RentWheels lists all five categories in one place, using identical 24-hour rental periods and a unified request form, so you describe your trip once.
+          </p>
+          <div class="problem-stats-row">
+            <div class="problem-stat">
+              <span class="stat-number">1</span>
+              <span class="stat-label">Unified Enquiry Form</span>
+            </div>
+            <div class="problem-stat">
+              <span class="stat-number">24h</span>
+              <span class="stat-label">Period-Based Duration</span>
+            </div>
+            <div class="problem-stat">
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Verified Primary Specs</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- 5. How It Works -->
-  <section class="section how-it-works-section">
+  <!-- ========================================================================
+       5. How It Works
+       ======================================================================== -->
+  <section id="how-it-works" class="section how-it-works-section">
     <div class="container">
-      <h2 class="heading-2 section-heading">How it works</h2>
+      <div class="section-heading-block">
+        <span class="section-eyebrow">TRANSPARENT PROCESS</span>
+        <h2 class="heading-2 section-title">How booking enquiries work</h2>
+        <p class="body-3 section-desc">
+          A genuine request workflow with zero fabricated charges or upfront payment traps.
+        </p>
+      </div>
+
       <div class="steps-grid">
         <div class="step-box">
-          <span class="step-num title-1">01</span>
-          <h3 class="title-2">Choose dates and vehicles</h3>
-          <p class="caption-1 step-text">
-            Select your pickup and return schedule in Mumbai and browse indicative 24-hour rate estimates.
+          <div class="step-header">
+            <span class="step-num">01</span>
+            <span class="step-tag">DISCOVER</span>
+          </div>
+          <h3 class="title-2 step-title">Choose dates and vehicles</h3>
+          <p class="body-6 step-text">
+            Select your pickup and return schedule in Mumbai. Every vehicle dynamically calculates its indicative price based on consecutive 24-hour billing cycles.
           </p>
         </div>
+
         <div class="step-box">
-          <span class="step-num title-1">02</span>
-          <h3 class="title-2">Add what you need to your trip</h3>
-          <p class="caption-1 step-text">
-            Combine cars, bikes, scooters, or buses into a single consolidated request.
+          <div class="step-header">
+            <span class="step-num">02</span>
+            <span class="step-tag">CONSOLIDATE</span>
+          </div>
+          <h3 class="title-2 step-title">Add what you need to your trip</h3>
+          <p class="body-6 step-text">
+            Combine cars, bikes, scooters, buses, or trucks into a single consolidated request. Review vehicle capabilities, seating, and estimated costs together.
           </p>
         </div>
+
         <div class="step-box">
-          <span class="step-num title-1">03</span>
-          <h3 class="title-2">Send one booking enquiry</h3>
-          <p class="caption-1 step-text">
-            Submit your details without paying upfront. Our reservations team confirms availability and final rates.
+          <div class="step-header">
+            <span class="step-num">03</span>
+            <span class="step-tag">CONFIRM</span>
+          </div>
+          <h3 class="title-2 step-title">Send one booking enquiry</h3>
+          <p class="body-6 step-text">
+            Submit your enquiry via Netlify Forms without paying upfront. Our Mumbai team verifies fleet availability and provides a definitive quote.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 6. FAQ Preview -->
+  <!-- ========================================================================
+       6. FAQ Preview
+       ======================================================================== -->
   <section class="section faq-preview-section">
     <div class="container faq-container">
-      <h2 class="heading-2 section-heading">Questions before you send a request</h2>
+      <div class="section-heading-block">
+        <span class="section-eyebrow">COMMON INQUIRIES</span>
+        <h2 class="heading-2 section-title">Frequently asked questions</h2>
+        <p class="body-3 section-desc">
+          Answers to questions before you submit your booking enquiry.
+        </p>
+      </div>
+
       <div class="faq-list">
         <details class="faq-card">
-          <summary class="faq-summary title-3">How does a booking request work?</summary>
+          <summary class="faq-summary title-3">
+            <span>How does a booking request work?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
           <div class="faq-content body-3">
-            Choose your dates and vehicles, add them to your trip, and submit the enquiry form. RentWheels replies to confirm availability and the final price. Nothing is charged on this website.
+            Choose your dates and vehicles, add them to your trip staging, and submit the enquiry form. RentWheels receives your request through Netlify Forms and contacts you to confirm availability and final terms. No online payments are taken on this website.
           </div>
         </details>
+
         <details class="faq-card">
-          <summary class="faq-summary title-3">How are the 24-hour rental periods billed?</summary>
+          <summary class="faq-summary title-3">
+            <span>How are the 24-hour rental periods billed?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
           <div class="faq-content body-3">
-            Rental duration is calculated on consecutive 24-hour cycles starting from your selected pickup time. Any additional commenced period is rounded up to the next full period.
+            Rental duration is calculated strictly on consecutive 24-hour cycles starting from your selected pickup time (Asia/Kolkata timezone). Any additional commenced period is rounded up to the next full 24-hour period (ceiling rule). Calendar-day billing is not used.
           </div>
         </details>
+
         <details class="faq-card">
-          <summary class="faq-summary title-3">Can I rent more than one vehicle?</summary>
+          <summary class="faq-summary title-3">
+            <span>Can I rent more than one vehicle in one request?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
           <div class="faq-content body-3">
-            Yes. Add several vehicles to one trip and send a single enquiry.
+            Yes. You can add up to 5 vehicles across any categories (e.g. 2 cars and 1 bus) to your trip and submit a single consolidated enquiry for all of them.
           </div>
         </details>
       </div>
 
-      <div class="faq-footer-link">
-        <a href="/faq" class="caption-1">Read all frequently asked questions &rarr;</a>
+      <div class="faq-footer-cta">
+        <a href="/faq" class="see-all-btn">
+          <span>Read all frequently asked questions</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  /* ==========================================================================
+     Hero Section — Midnight Electric Layout
+     ========================================================================== */
   .hero-section {
-    padding: var(--space-700) 0 var(--space-800);
-    border-bottom: 1px solid var(--border-primary);
+    position: relative;
+    padding: var(--space-600) 0 var(--space-800);
+    overflow: hidden;
+    background: radial-gradient(circle at 80% 20%, rgba(6, 59, 80, 0.35) 0%, rgba(7, 21, 34, 0) 65%),
+                radial-gradient(circle at 20% 80%, rgba(7, 83, 106, 0.2) 0%, rgba(7, 21, 34, 0) 50%);
+  }
+
+  /* Ambient Glow Overlays */
+  .ambient-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ambient-glow-top {
+    top: -100px;
+    right: 15%;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(18, 184, 208, 0.18) 0%, rgba(7, 83, 106, 0.05) 70%, transparent 100%);
+  }
+
+  .ambient-glow-car {
+    top: 15%;
+    right: 5%;
+    width: 550px;
+    height: 380px;
+    background: radial-gradient(ellipse, rgba(25, 198, 217, 0.16) 0%, rgba(6, 59, 80, 0.12) 55%, transparent 80%);
   }
 
   .hero-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+  }
+
+  .hero-main-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-600);
+    gap: var(--space-500);
     align-items: center;
   }
 
   @media (min-width: 1024px) {
-    .hero-container {
-      grid-template-columns: 1.2fr 0.8fr;
+    .hero-main-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-600);
     }
   }
 
+  /* Hero Copy */
   .hero-copy-col {
     display: flex;
     flex-direction: column;
     gap: var(--space-300);
   }
 
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(7, 83, 106, 0.35);
+    border: 1px solid rgba(18, 184, 208, 0.35);
+    border-radius: var(--radius-full);
+    padding: 6px 14px;
+    width: fit-content;
+    box-shadow: 0 0 16px rgba(18, 184, 208, 0.12);
+  }
+
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-cyan-bright);
+    box-shadow: 0 0 8px var(--color-cyan-bright);
+  }
+
+  .hero-badge-text {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-cyan-bright);
+    text-transform: uppercase;
+  }
+
   .hero-title {
-    max-width: 680px;
-    background: linear-gradient(90deg, #ffffff 0%, #9b9b9b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--color-text-white);
+    margin: 0;
   }
 
-  .hero-subheading {
-    max-width: 680px;
-    color: var(--text-secondary);
-  }
-
-  .request-panel {
-    background-color: var(--surface-primary-subtle);
-    border: 1px solid var(--border-primary);
-    border-radius: var(--radius-16);
-    padding: var(--space-300);
-    margin-top: var(--space-100);
-  }
-
-  .panel-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-200);
-  }
-
-  .panel-inputs-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-150, 12px);
-  }
-
-  @media (min-width: 640px) {
-    .panel-inputs-row {
-      grid-template-columns: 1fr 1fr 1.2fr;
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 48px;
     }
   }
 
-  .panel-field {
+  @media (min-width: 1200px) {
+    .hero-title {
+      font-size: 54px;
+    }
+  }
+
+  .hero-subheading {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-cool-light);
+    max-width: 600px;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .hero-subheading {
+      font-size: 17px;
+    }
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-200);
+    margin-top: var(--space-100);
+  }
+
+  .hero-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--action-primary);
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: var(--radius-full);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--glow-blue-cta);
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .hero-btn-primary:hover {
+    background: var(--action-primary-hover);
+    box-shadow: 0 6px 24px rgba(36, 99, 235, 0.6);
+    transform: translateY(-2px);
+  }
+
+  .hero-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(16, 42, 61, 0.7);
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass);
+    padding: 14px 26px;
+    border-radius: var(--radius-full);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    backdrop-filter: blur(12px);
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .hero-btn-secondary:hover {
+    background: rgba(7, 83, 106, 0.5);
+    border-color: var(--color-cyan-bright);
+    color: #ffffff;
+  }
+
+  /* Highlights Row */
+  .hero-highlights-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-300);
+    padding-top: var(--space-200);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .highlight-item {
     display: flex;
     flex-direction: column;
-    gap: var(--space-50);
+    gap: 2px;
   }
 
-  .styled-input {
-    background-color: var(--surface-secondary-subtle);
-    border: 1px solid var(--border-control);
-    border-radius: var(--radius-8);
-    padding: var(--space-75) var(--space-150, 12px);
-    color: var(--text-primary);
-    min-height: 44px;
-    width: 100%;
+  .highlight-val {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-cyan-bright);
+    font-family: var(--font-sans);
   }
 
-  .btn-find-vehicle {
-    background-color: var(--action-primary);
-    color: var(--text-inverted);
-    border-radius: var(--radius-8);
-    padding: var(--space-150, 12px) var(--space-300);
-    min-height: 48px;
-    font-weight: 600;
+  .highlight-lbl {
+    font-size: 12px;
+    color: var(--color-text-cool-muted);
+  }
+
+  .highlight-divider {
+    width: 1px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  /* Hero Visual Column */
+  .hero-visual-col {
+    position: relative;
     display: flex;
-    align-items: center;
     justify-content: center;
-    transition: background-color var(--duration-color) var(--ease-base);
+    align-items: center;
   }
 
-  .btn-find-vehicle:hover {
-    background-color: var(--action-primary-hover);
-  }
-
-  .proof-line {
-    color: var(--text-tertiary);
-  }
-
-  .hero-image-frame {
+  .hero-car-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 2;
-    border-radius: var(--radius-16);
-    overflow: hidden;
-    background-color: var(--surface-secondary);
-    border: 1px solid var(--border-primary);
+    max-width: 650px;
   }
 
-  .hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero-img-badge {
+  .hero-car-backdrop {
     position: absolute;
-    bottom: var(--space-150, 12px);
-    left: var(--space-150, 12px);
-    background-color: rgba(24, 24, 24, 0.85);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--border-primary);
-    padding: var(--space-50) var(--space-150, 12px);
-    border-radius: var(--radius-full);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 110%;
+    background: radial-gradient(ellipse at center, rgba(18, 184, 208, 0.22) 0%, rgba(7, 83, 106, 0.12) 48%, transparent 72%);
+    filter: blur(30px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-car-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+    transition: transform var(--duration-layout) var(--ease-base);
+  }
+
+  .hero-car-wrapper:hover .hero-car-img {
+    transform: scale(1.02);
+  }
+
+  .hero-car-badge {
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    z-index: 2;
     display: flex;
     align-items: center;
-    gap: var(--space-75);
+    gap: 10px;
+    background: rgba(4, 25, 39, 0.85);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(120, 210, 230, 0.25);
+    border-radius: var(--radius-full);
+    padding: 8px 16px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(18, 184, 208, 0.15);
+  }
+
+  .badge-accent-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-cyan-bright);
+    box-shadow: 0 0 8px var(--color-cyan-bright);
+  }
+
+  .badge-text-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .badge-name {
+    font-size: 13px;
+    font-weight: 600;
     color: var(--text-primary);
   }
 
-  /* Section Styles */
+  .badge-price {
+    font-size: 11px;
+    color: var(--color-cyan-ambient);
+  }
+
+  /* ==========================================================================
+     Compact Booking / Search Strip Panel
+     ========================================================================== */
+  .search-strip-panel {
+    background: var(--surface-glass-panel);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-24);
+    padding: var(--space-200) var(--space-300);
+    box-shadow: 0 16px 48px rgba(4, 21, 34, 0.75), 0 0 30px rgba(18, 184, 208, 0.1);
+    margin-top: var(--space-200);
+  }
+
+  .search-strip-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-150, 12px);
+  }
+
+  .strip-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-150, 12px);
+    align-items: flex-end;
+  }
+
+  @media (min-width: 640px) {
+    .strip-fields-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .strip-fields-grid {
+      grid-template-columns: 1.5fr 1fr 0.9fr 1fr 0.9fr auto;
+    }
+  }
+
+  .strip-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .strip-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-cool-light);
+    letter-spacing: 0.02em;
+  }
+
+  .strip-label-icon {
+    font-size: 13px;
+  }
+
+  .strip-input,
+  .strip-select {
+    background: rgba(16, 42, 61, 0.7);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-12);
+    padding: 10px 14px;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    min-height: 44px;
+    width: 100%;
+    outline: none;
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .strip-input:focus,
+  .strip-select:focus {
+    border-color: var(--color-cyan-bright);
+    box-shadow: 0 0 12px rgba(18, 184, 208, 0.25);
+    background: rgba(7, 83, 106, 0.4);
+  }
+
+  .strip-select option {
+    background: #0b1d2b;
+    color: #f4f7fa;
+  }
+
+  .strip-action-field {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .strip-btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--action-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-12);
+    padding: 10px 24px;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: var(--glow-blue-cta);
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .strip-btn-submit:hover {
+    background: var(--action-primary-hover);
+    box-shadow: 0 4px 20px rgba(36, 99, 235, 0.55);
+    transform: translateY(-1px);
+  }
+
+  /* Duration Calculation Bar */
+  .strip-duration-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+  }
+
+  .duration-icon {
+    color: var(--color-cyan-bright);
+  }
+
+  .duration-text {
+    color: var(--color-text-cool-light);
+    font-weight: 500;
+  }
+
+  .duration-policy-tag {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--color-text-cool-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+  }
+
+  /* ==========================================================================
+     Shared Section Headings & Layouts
+     ========================================================================== */
   .section {
     padding: var(--space-800) 0;
-    border-bottom: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  .section-heading {
+  .section-heading-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: var(--space-500);
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-cyan-bright);
+    text-transform: uppercase;
+  }
+
+  .section-title {
     color: var(--text-primary);
-    margin-bottom: var(--space-200);
+    margin: 0;
   }
 
   .section-desc {
-    color: var(--text-secondary);
+    color: var(--color-text-cool-light);
+    margin: 0;
+    max-width: 600px;
   }
 
   .section-header-row {
@@ -350,52 +875,130 @@ const categories = [
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: var(--space-400);
+    gap: var(--space-200);
   }
 
-  .see-all-link {
-    color: var(--action-primary);
+  .see-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-cyan-bright);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--duration-color) var(--ease-base);
   }
 
-  /* Category Rows */
-  .category-rows-list {
+  .see-all-btn:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(25, 198, 217, 0.5);
+  }
+
+  /* ==========================================================================
+     Browse by Category Cards
+     ========================================================================== */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-200);
+  }
+
+  @media (min-width: 640px) {
+    .categories-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .categories-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .category-card {
+    background: var(--surface-glass-card);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-16);
+    padding: var(--space-300);
     display: flex;
     flex-direction: column;
-    margin-top: var(--space-300);
+    gap: var(--space-100);
+    text-decoration: none;
+    transition: all var(--duration-color) var(--ease-base);
   }
 
-  .category-row-item {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1.5fr auto;
+  .category-card:hover {
+    background: rgba(7, 83, 106, 0.35);
+    border-color: rgba(18, 184, 208, 0.4);
+    box-shadow: 0 12px 30px rgba(4, 21, 34, 0.6), 0 0 20px rgba(18, 184, 208, 0.15);
+    transform: translateY(-3px);
+  }
+
+  .cat-card-header {
+    display: flex;
     align-items: center;
-    padding: var(--space-200) var(--space-150, 12px);
-    border-bottom: 1px solid var(--border-primary);
-    transition: background-color var(--duration-color) var(--ease-base);
-    border-radius: var(--radius-8);
+    justify-content: space-between;
   }
 
-  .category-row-item:hover {
-    background-color: var(--surface-secondary);
+  .cat-icon {
+    font-size: 26px;
   }
 
-  .category-row-item:hover .row-arrow {
-    transform: translateX(4px);
+  .cat-count-badge {
+    background: rgba(18, 184, 208, 0.15);
+    border: 1px solid rgba(18, 184, 208, 0.25);
+    color: var(--color-cyan-bright);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
   }
 
-  .row-name {
+  .cat-name {
     color: var(--text-primary);
+    margin: 0;
+    font-size: 18px;
   }
 
-  .row-count,
-  .row-rate {
-    color: var(--text-tertiary);
+  .cat-desc {
+    color: var(--color-text-cool-muted);
+    line-height: 1.4;
+    flex-grow: 1;
+    margin: 0;
   }
 
-  .row-arrow {
+  .cat-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-150, 12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    margin-top: var(--space-100);
+  }
+
+  .cat-rate {
+    color: var(--color-text-cool-light);
+  }
+
+  .cat-rate strong {
+    color: var(--color-cyan-bright);
+  }
+
+  .cat-arrow {
     color: var(--action-primary);
+    font-size: 16px;
     transition: transform var(--duration-color) var(--ease-base);
   }
 
-  /* Featured Grid */
+  .category-card:hover .cat-arrow {
+    transform: translateX(4px);
+    color: var(--color-cyan-bright);
+  }
+
+  /* ==========================================================================
+     Featured Grid
+     ========================================================================== */
   .featured-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -404,125 +1007,331 @@ const categories = [
 
   @media (min-width: 640px) {
     .featured-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured-grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  /* Problem & Solution */
-  .problem-container {
-    max-width: 800px;
+  /* ==========================================================================
+     Problem & Solution Section
+     ========================================================================== */
+  .problem-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(6, 59, 80, 0.5) 0%, rgba(7, 21, 34, 0.85) 100%);
+    border: 1px solid rgba(18, 184, 208, 0.25);
+    border-radius: var(--radius-24);
+    padding: var(--space-600) var(--space-400);
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(4, 21, 34, 0.65);
+  }
+
+  .problem-glow {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(18, 184, 208, 0.2) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .problem-content {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .problem-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-cyan-bright);
+    text-transform: uppercase;
   }
 
   .problem-title {
     color: var(--text-primary);
-    margin-bottom: var(--space-200);
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  @media (min-width: 768px) {
+    .problem-title {
+      font-size: 34px;
+    }
   }
 
   .problem-body {
-    color: var(--text-secondary);
-    line-height: 1.6;
+    color: var(--color-text-cool-light);
+    line-height: 1.65;
+    margin: 0;
   }
 
-  /* How It Works Steps */
+  .problem-stats-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-200);
+    margin-top: var(--space-300);
+    padding-top: var(--space-300);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (min-width: 640px) {
+    .problem-stats-row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .problem-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-number {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-cyan-bright);
+    font-family: var(--font-sans);
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--color-text-cool-muted);
+  }
+
+  /* ==========================================================================
+     How It Works Steps
+     ========================================================================== */
   .steps-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-300);
-    margin-top: var(--space-300);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .steps-grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
   .step-box {
-    background-color: var(--surface-primary-subtle);
-    border: 1px solid var(--border-primary);
-    border-radius: var(--radius-16);
-    padding: var(--space-300);
+    background: var(--surface-glass-card);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-24);
+    padding: var(--space-400);
     display: flex;
     flex-direction: column;
-    gap: var(--space-100);
+    gap: var(--space-150, 12px);
+    box-shadow: 0 8px 24px rgba(4, 21, 34, 0.45);
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .step-box:hover {
+    border-color: rgba(18, 184, 208, 0.35);
+    box-shadow: 0 12px 32px rgba(4, 21, 34, 0.65), 0 0 20px rgba(18, 184, 208, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .step-num {
-    color: var(--action-primary);
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-cyan-bright);
+  }
+
+  .step-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-text-cool-muted);
+  }
+
+  .step-title {
+    color: var(--text-primary);
+    margin: 0;
+    font-size: 18px;
   }
 
   .step-text {
-    color: var(--text-tertiary);
+    color: var(--color-text-cool-light);
+    line-height: 1.55;
+    margin: 0;
   }
 
-  /* FAQ Preview */
+  /* ==========================================================================
+     FAQ Preview
+     ========================================================================== */
   .faq-container {
-    max-width: 800px;
+    max-width: 860px;
   }
 
   .faq-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-200);
-    margin-top: var(--space-300);
+    gap: var(--space-150, 12px);
   }
 
   .faq-card {
-    background-color: var(--surface-primary-subtle);
-    border: 1px solid var(--border-primary);
-    border-radius: var(--radius-12);
+    background: var(--surface-glass-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-16);
     overflow: hidden;
+    transition: border-color var(--duration-color) var(--ease-base);
+  }
+
+  .faq-card:hover {
+    border-color: rgba(18, 184, 208, 0.35);
   }
 
   .faq-summary {
-    padding: var(--space-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-200) var(--space-300);
     color: var(--text-primary);
     cursor: pointer;
+    list-style: none;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .faq-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-icon {
+    font-size: 20px;
+    color: var(--color-cyan-bright);
+    transition: transform var(--duration-color) var(--ease-base);
+  }
+
+  .faq-card[open] .faq-icon {
+    transform: rotate(45deg);
   }
 
   .faq-content {
-    padding: 0 var(--space-200) var(--space-200);
-    color: var(--text-secondary);
-    line-height: 1.5;
+    padding: 0 var(--space-300) var(--space-300);
+    color: var(--color-text-cool-light);
+    line-height: 1.6;
   }
 
-  .faq-footer-link {
-    margin-top: var(--space-300);
-  }
-
-  .faq-footer-link a {
-    color: var(--action-primary);
+  .faq-footer-cta {
+    margin-top: var(--space-400);
+    display: flex;
+    justify-content: flex-start;
   }
 </style>
 
 <script>
-  import { getTodayKolkata } from '../scripts/billing';
+  import { getTodayKolkata, calculateRentalPeriods } from '../scripts/billing';
   import { getTripState, saveTripState } from '../scripts/trip';
 
-  function initHeroDates() {
-    const pickup = document.getElementById('heroPickupDate') as HTMLInputElement;
-    const returnDate = document.getElementById('heroReturnDate') as HTMLInputElement;
+  function initHeroSearch() {
+    const pickupDateInput = document.getElementById('pickupDate') as HTMLInputElement;
+    const returnDateInput = document.getElementById('returnDate') as HTMLInputElement;
+    const pickupTimeInput = document.getElementById('pickupTime') as HTMLInputElement;
+    const returnTimeInput = document.getElementById('returnTime') as HTMLInputElement;
+    const locationSelect = document.getElementById('pickupLocation') as HTMLSelectElement;
+    const durationIndicator = document.getElementById('heroDurationIndicator');
+    const form = document.getElementById('heroSearchForm') as HTMLFormElement;
+
+    if (!pickupDateInput || !returnDateInput) return;
+
     const today = getTodayKolkata();
+    pickupDateInput.min = today;
+    returnDateInput.min = today;
 
-    if (pickup && returnDate) {
-      pickup.min = today;
-      returnDate.min = today;
+    // Prefill from current trip state if existing
+    const state = getTripState();
+    if (state.pickupDate) pickupDateInput.value = state.pickupDate;
+    else {
+      // Default pickup = tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      pickupDateInput.value = tomorrow.toISOString().split('T')[0];
+    }
 
-      pickup.addEventListener('change', () => {
-        if (pickup.value) returnDate.min = pickup.value;
-      });
+    if (state.returnDate) returnDateInput.value = state.returnDate;
+    else {
+      // Default return = 2 days after tomorrow
+      const dayAfter = new Date();
+      dayAfter.setDate(dayAfter.getDate() + 3);
+      returnDateInput.value = dayAfter.toISOString().split('T')[0];
+    }
 
-      const form = document.getElementById('heroRequestForm') as HTMLFormElement;
-      if (form) {
-        form.addEventListener('submit', () => {
-          const state = getTripState();
-          if (pickup.value) state.pickupDate = pickup.value;
-          if (returnDate.value) state.returnDate = returnDate.value;
-          saveTripState(state);
-        });
+    if (state.pickupTime) pickupTimeInput.value = state.pickupTime;
+    if (state.returnTime) returnTimeInput.value = state.returnTime;
+
+    returnDateInput.min = pickupDateInput.value || today;
+
+    function updateDuration() {
+      if (!durationIndicator) return;
+      const pDate = pickupDateInput.value;
+      const rDate = returnDateInput.value;
+      const pTime = pickupTimeInput.value || '10:00';
+      const rTime = returnTimeInput.value || '10:00';
+
+      if (!pDate || !rDate) {
+        durationIndicator.textContent = 'Select pickup and return dates to calculate duration';
+        return;
       }
+
+      const res = calculateRentalPeriods(pDate, rDate, pTime, rTime);
+      if (res.valid) {
+        const periodWord = res.periods === 1 ? 'period' : 'periods';
+        const hoursApprox = res.periods * 24;
+        durationIndicator.innerHTML = `Estimated duration: <strong>${res.periods} ${periodWord} (${hoursApprox} hours)</strong> &bull; Total elapsed: ${res.totalHours.toFixed(1)} hrs`;
+      } else {
+        durationIndicator.textContent = res.error || 'Invalid date/time range. Return must follow pickup.';
+      }
+    }
+
+    pickupDateInput.addEventListener('change', () => {
+      if (pickupDateInput.value) {
+        returnDateInput.min = pickupDateInput.value;
+        if (returnDateInput.value && returnDateInput.value < pickupDateInput.value) {
+          returnDateInput.value = pickupDateInput.value;
+        }
+      }
+      updateDuration();
+    });
+
+    returnDateInput.addEventListener('change', updateDuration);
+    pickupTimeInput.addEventListener('change', updateDuration);
+    returnTimeInput.addEventListener('change', updateDuration);
+
+    updateDuration();
+
+    if (form) {
+      form.addEventListener('submit', () => {
+        const currentState = getTripState();
+        if (pickupDateInput.value) currentState.pickupDate = pickupDateInput.value;
+        if (returnDateInput.value) currentState.returnDate = returnDateInput.value;
+        if (pickupTimeInput.value) currentState.pickupTime = pickupTimeInput.value;
+        if (returnTimeInput.value) currentState.returnTime = returnTimeInput.value;
+        saveTripState(currentState);
+      });
     }
   }
 
-  window.addEventListener('DOMContentLoaded', initHeroDates);
+  window.addEventListener('DOMContentLoaded', initHeroSearch);
 </script>

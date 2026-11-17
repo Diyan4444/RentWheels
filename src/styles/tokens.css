@@ -1,63 +1,79 @@
 /* ==========================================================================
-   RentWheels Design Tokens (Layer 1 Core Palettes & Layer 2 Semantic Tokens)
+   RentWheels Design Tokens — Midnight Electric Palette
    ========================================================================== */
 
 :root {
-  /* --- Layer 1: Core Palettes --- */
-  --color-gray-00: #ffffff;
-  --color-gray-50: #f5f5f5;
-  --color-gray-100: #ebebeb;
-  --color-gray-150: #e0e0e0;
-  --color-gray-200: #d2d2d2;
-  --color-gray-250: #c4c4c4;
-  --color-gray-300: #b3b3b3;
-  --color-gray-400: #9b9b9b;
-  --color-gray-450: #868686;
-  --color-gray-500: #727272;
-  --color-gray-600: #5a5a5a;
-  --color-gray-700: #444444;
-  --color-gray-750: #313131;
-  --color-gray-800: #272727;
-  --color-gray-850: #1f1f1f;
-  --color-gray-870: #181818;
-  --color-gray-900: #101010;
-  --color-gray-950: #080808;
-  --color-gray-1000: #000000;
+  /* --- Midnight Navy Palette --- */
+  --color-midnight-base: #071522;
+  --color-midnight-surface: #0b1d2b;
+  --color-midnight-raised: #102a3d;
 
-  /* Primary Accent: Burnt Orange (approx 70% saturation) */
-  --color-primary-400: #e29447;
-  --color-primary-500: #d9822b;
-  --color-primary-600: #be6e1e;
+  /* --- Deep Ocean Teal Palette --- */
+  --color-teal-deep: #063b50;
+  --color-teal-medium: #07536a;
+  --color-teal-high: #0b7185;
 
-  /* Functional Status */
+  /* --- Electric Blue Palette (Primary CTAs & Active Controls) --- */
+  --color-blue-electric: #2463eb;
+  --color-blue-active: #315fea;
+  --color-blue-hover: #4778f2;
+
+  /* --- Electric Cyan Palette (Ambient Glow, Badges & Highlights) --- */
+  --color-cyan-glow: #12b8d0;
+  --color-cyan-bright: #19c6d9;
+  --color-cyan-ambient: #79e2ec;
+
+  /* --- Supporting Warm Amber Palette --- */
+  --color-amber-400: #ffe09a;
+  --color-amber-500: #f4bd45;
+  --color-amber-600: #e7a92e;
+
+  /* --- Cool White Typography Palette --- */
+  --color-text-white: #f4f7fa;
+  --color-text-cool-light: #dce7ef;
+  --color-text-cool-muted: #a9bdcc;
+
+  /* --- Functional Status --- */
   --color-red-500: #e5484d;
   --color-green-500: #30a46c;
   --color-yellow-500: #d1b000;
 
-  /* --- Layer 2: Semantic Tokens (Dark Mode Default) --- */
-  --surface-primary: var(--color-gray-870); /* #181818 */
-  --surface-primary-subtle: var(--color-gray-850); /* #1F1F1F */
-  --surface-secondary: var(--color-gray-800); /* #272727 */
-  --surface-secondary-subtle: var(--color-gray-750); /* #313131 */
-  --surface-footer: var(--color-gray-1000); /* #000000 */
-  --surface-nav: rgba(19, 18, 9, 0.72);
+  /* --- Layer 2: Semantic Tokens (Midnight Electric Theme) --- */
+  --surface-primary: var(--color-midnight-base); /* #071522 */
+  --surface-primary-subtle: var(--color-midnight-surface); /* #0B1D2B */
+  --surface-secondary: var(--color-midnight-raised); /* #102A3D */
+  --surface-secondary-subtle: var(--color-teal-deep); /* #063B50 */
+  --surface-footer: #030b12;
 
-  --text-primary: var(--color-gray-50); /* #F5F5F5 */
-  --text-secondary: var(--color-gray-200); /* #D2D2D2 */
-  --text-tertiary: var(--color-gray-400); /* #9B9B9B */
-  --text-inverted: var(--color-gray-850); /* #1F1F1F */
+  /* Floating Glass Pill Surfaces */
+  --surface-glass-nav: rgba(4, 25, 39, 0.72);
+  --surface-glass-panel: rgba(7, 29, 43, 0.78);
+  --surface-glass-card: rgba(11, 29, 43, 0.65);
+
+  --text-primary: var(--color-text-white); /* #F4F7FA */
+  --text-secondary: var(--color-text-cool-light); /* #DCE7EF */
+  --text-tertiary: var(--color-text-cool-muted); /* #A9BDCC */
+  --text-inverted: #071522;
+  --text-cyan: var(--color-cyan-bright);
   --text-error: var(--color-red-500);
   --text-success: var(--color-green-500);
 
-  --border-primary: var(--color-gray-750); /* #313131 */
-  --border-control: var(--color-gray-500); /* #727272 */
-  --border-error: var(--color-red-500);
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-cyan: rgba(18, 184, 208, 0.2);
+  --border-primary: var(--border-subtle);
+  --border-control: rgba(120, 210, 230, 0.18);
+  --border-glass: rgba(120, 210, 230, 0.15);
 
-  --action-primary: var(--color-primary-500);
-  --action-primary-hover: var(--color-primary-400);
-  --action-primary-click: var(--color-primary-600);
+  /* Primary Action */
+  --action-primary: var(--color-blue-electric);
+  --action-primary-hover: var(--color-blue-hover);
+  --action-primary-click: var(--color-blue-active);
 
-  --overlay-backdrop: rgba(68, 68, 68, 0.64);
+  /* Ambient Glows */
+  --glow-cyan-subtle: 0 0 24px rgba(18, 184, 208, 0.18);
+  --glow-cyan-strong: 0 0 40px rgba(25, 198, 217, 0.28);
+  --glow-blue-cta: 0 4px 18px rgba(36, 99, 235, 0.35);
 
   /* --- Spacing Tokens --- */
   --space-0: 0px;
@@ -96,29 +112,29 @@
 }
 
 /* ==========================================================================
-   Typography Style Classes (Tailwind Scale Steps, Semibold Headings)
+   Typography Style Classes
    ========================================================================== */
 
 .heading-1 {
   font-family: var(--font-sans);
-  font-size: 36px;
-  line-height: 40px;
+  font-size: 40px;
+  line-height: 44px;
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 @media (min-width: 640px) {
   .heading-1 {
-    font-size: 48px;
-    line-height: 48px;
+    font-size: 52px;
+    line-height: 54px;
   }
 }
 
 @media (min-width: 1024px) {
   .heading-1 {
-    font-size: 60px;
-    line-height: 60px;
+    font-size: 64px;
+    line-height: 66px;
   }
 }
 
@@ -127,21 +143,21 @@
   font-size: 30px;
   line-height: 36px;
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 @media (min-width: 640px) {
   .heading-2 {
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 38px;
+    line-height: 42px;
   }
 }
 
 @media (min-width: 1024px) {
   .heading-2 {
-    font-size: 48px;
-    line-height: 48px;
+    font-size: 46px;
+    line-height: 50px;
   }
 }
 
@@ -150,21 +166,13 @@
   font-size: 24px;
   line-height: 32px;
   font-weight: 600;
-  letter-spacing: 0;
-  text-wrap: balance;
+  letter-spacing: -0.01em;
 }
 
 @media (min-width: 640px) {
   .heading-3 {
-    font-size: 30px;
-    line-height: 36px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .heading-3 {
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 28px;
+    line-height: 34px;
   }
 }
 
@@ -173,21 +181,6 @@
   font-size: 20px;
   line-height: 28px;
   font-weight: 600;
-  letter-spacing: 0;
-}
-
-@media (min-width: 640px) {
-  .heading-4 {
-    font-size: 24px;
-    line-height: 32px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .heading-4 {
-    font-size: 30px;
-    line-height: 36px;
-  }
 }
 
 .title-1 {
@@ -200,7 +193,7 @@
 .title-2 {
   font-family: var(--font-sans);
   font-size: 18px;
-  line-height: 28px;
+  line-height: 26px;
   font-weight: 500;
 }
 
@@ -221,7 +214,7 @@
 .body-3 {
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 24px;
+  line-height: 26px;
   font-weight: 400;
   text-wrap: pretty;
 }
@@ -229,7 +222,7 @@
 .body-5 {
   font-family: var(--font-sans);
   font-size: 14px;
-  line-height: 20px;
+  line-height: 22px;
   font-weight: 500;
 }
 
@@ -243,22 +236,22 @@
 
 .button-lg {
   font-family: var(--font-sans);
-  font-size: 18px;
-  line-height: 28px;
-  font-weight: 600;
-}
-
-.button-md {
-  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
 }
 
+.button-md {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
 .button-sm {
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 13px;
+  line-height: 18px;
   font-weight: 600;
 }
 
@@ -271,8 +264,8 @@
 
 .caption-2 {
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 13px;
+  line-height: 18px;
   font-weight: 400;
 }
 

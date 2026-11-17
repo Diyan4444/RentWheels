@@ -29,7 +29,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <meta name="theme-color" content="#181818" />
+    <meta name="theme-color" content="#071522" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph / Social -->
@@ -43,13 +43,16 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     <!-- Skip to main content landmark (A2, E3) -->
     <a href="#main" class="skip-link">Skip to main content</a>
 
-    <!-- Site Header -->
+    <!-- Floating Glass Pill Header -->
     <header class="site-header" role="banner">
-      <div class="container header-container">
+      <div class="header-pill">
+        <!-- Brand Wordmark & Logo -->
         <a href="/" class="brand-link" aria-label="RentWheels Home">
+          <span class="brand-glow-dot" aria-hidden="true"></span>
           <span class="brand-wordmark">{siteConfig.name}</span>
         </a>
 
+        <!-- Primary Navigation Links -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
           <ul class="nav-list" role="list">
             <li><a href="/fleet" class="nav-link">Fleet</a></li>
@@ -58,10 +61,21 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
           </ul>
         </nav>
 
+        <!-- Actions: Trip Badge Counter & Contact CTA -->
         <div class="header-actions">
-          <a href="/trip" class="trip-button" id="headerTripBtn" aria-label="View trip">
-            <span>Trip</span>
-            <span class="trip-count-badge" id="headerTripCount" aria-hidden="true">0</span>
+          <a href="/trip" class="trip-pill-btn" id="headerTripBtn" aria-label="View your trip enquiry staging">
+            <svg class="trip-pill-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span class="trip-label">Trip</span>
+            <span class="trip-count-badge" id="headerTripCount" aria-hidden="true" style="display: none;">0</span>
+          </a>
+
+          <a href={`mailto:${siteConfig.contact.email}`} class="contact-pill-btn" aria-label="Contact RentWheels via email">
+            <span>Enquire</span>
           </a>
         </div>
       </div>
@@ -80,9 +94,12 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
       <div class="container footer-container">
         <div class="footer-columns">
           <div class="footer-brand">
-            <span class="brand-wordmark">{siteConfig.name}</span>
+            <div class="footer-brand-header">
+              <span class="brand-glow-dot" aria-hidden="true"></span>
+              <span class="brand-wordmark">{siteConfig.name}</span>
+            </div>
             <p class="footer-tagline body-6">
-              Vehicle rentals across cars, bikes, scooters, buses and trucks in Mumbai.
+              Cinematic automotive rentals across cars, bikes, scooters, buses and trucks in Mumbai with transparent 24-hour billing.
             </p>
             {siteConfig.contact.email && (
               <p class="footer-contact caption-2">
@@ -124,7 +141,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
           <p class="copyright caption-2">&copy; {currentYear} {siteConfig.name}. All rights reserved.</p>
           {siteConfig.demoMode && (
             <p class="demo-notice caption-5">
-              Sample fleet and prices for demonstration. Requests are received but no payment is taken.
+              Demonstration mode active. Requests are received via Netlify Forms but no instant bookings or online payments are processed.
             </p>
           )}
         </div>
@@ -134,30 +151,77 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
 </html>
 
 <style>
+  /* ==========================================================================
+     Floating Glass Pill Header
+     ========================================================================== */
   .site-header {
     position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: var(--surface-nav);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-primary);
-    padding: var(--space-100) 0;
+    top: 16px;
+    z-index: 1000;
+    width: 100%;
+    padding: 0 var(--space-200);
+    pointer-events: none;
   }
 
-  .header-container {
+  .header-pill {
+    pointer-events: auto;
+    max-width: 1080px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-200);
+    background: var(--surface-glass-nav);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-full);
+    padding: 8px 18px;
+    box-shadow: 0 12px 36px rgba(4, 21, 34, 0.65), 0 0 20px rgba(18, 184, 208, 0.12);
+    transition: border-color var(--duration-color) var(--ease-base),
+      box-shadow var(--duration-color) var(--ease-base);
+  }
+
+  .header-pill:hover {
+    border-color: rgba(120, 210, 230, 0.28);
+    box-shadow: 0 14px 40px rgba(4, 21, 34, 0.75), 0 0 26px rgba(18, 184, 208, 0.18);
+  }
+
+  /* Brand */
+  .brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+
+  .brand-glow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-cyan-bright);
+    box-shadow: 0 0 10px var(--color-cyan-bright);
+    flex-shrink: 0;
   }
 
   .brand-wordmark {
     font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 20px;
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.025em;
     color: var(--text-primary);
+  }
+
+  /* Nav Links */
+  .desktop-nav {
+    display: none;
+  }
+
+  @media (min-width: 680px) {
+    .desktop-nav {
+      display: block;
+    }
   }
 
   .nav-list {
@@ -165,36 +229,56 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     align-items: center;
     gap: var(--space-300);
     list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .nav-link {
     font-size: 14px;
     font-weight: 500;
     color: var(--text-secondary);
+    text-decoration: none;
     transition: color var(--duration-color) var(--ease-base);
+    position: relative;
+    padding: 4px 2px;
   }
 
   .nav-link:hover {
     color: var(--text-primary);
+    text-shadow: 0 0 12px rgba(121, 226, 236, 0.45);
   }
 
-  .trip-button {
+  /* Header Actions */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-100);
+  }
+
+  .trip-pill-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-75);
-    background-color: var(--surface-secondary);
-    border: 1px solid var(--border-control);
-    padding: var(--space-75) var(--space-150, 12px);
-    border-radius: var(--radius-8);
-    font-size: 14px;
+    gap: 8px;
+    background: rgba(16, 42, 61, 0.7);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-full);
+    padding: 6px 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--text-primary);
-    min-height: 44px;
-    transition: background-color var(--duration-color) var(--ease-base);
+    text-decoration: none;
+    min-height: 38px;
+    transition: all var(--duration-color) var(--ease-base);
   }
 
-  .trip-button:hover {
-    background-color: var(--surface-secondary-subtle);
+  .trip-pill-btn:hover {
+    background: rgba(7, 83, 106, 0.5);
+    border-color: var(--color-cyan-bright);
+    box-shadow: 0 0 14px rgba(18, 184, 208, 0.25);
+  }
+
+  .trip-pill-icon {
+    color: var(--color-cyan-bright);
   }
 
   .trip-count-badge {
@@ -202,18 +286,45 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     align-items: center;
     justify-content: center;
     background-color: var(--action-primary);
-    color: var(--text-inverted);
-    font-size: 12px;
-    font-weight: 600;
-    width: 20px;
-    height: 20px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
     border-radius: var(--radius-full);
   }
 
+  .contact-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--action-primary);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-full);
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    min-height: 38px;
+    box-shadow: var(--glow-blue-cta);
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .contact-pill-btn:hover {
+    background: var(--action-primary-hover);
+    box-shadow: 0 4px 20px rgba(36, 99, 235, 0.55);
+    transform: translateY(-1px);
+  }
+
+  /* ==========================================================================
+     Footer Styles
+     ========================================================================== */
   .site-footer {
     background-color: var(--surface-footer);
     border-top: 1px solid var(--border-primary);
-    padding: var(--space-700) 0 var(--space-400);
+    padding: var(--space-800) 0 var(--space-500);
     margin-top: var(--space-900);
   }
 
@@ -236,13 +347,25 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     gap: var(--space-100);
   }
 
+  .footer-brand-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   .footer-tagline {
     color: var(--text-tertiary);
     max-width: 320px;
+    line-height: 1.6;
   }
 
   .footer-contact a {
-    color: var(--action-primary);
+    color: var(--color-cyan-bright);
+    text-decoration: none;
+  }
+
+  .footer-contact a:hover {
+    text-decoration: underline;
   }
 
   .footer-col-title {
@@ -255,16 +378,19 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
     display: flex;
     flex-direction: column;
     gap: var(--space-75);
+    padding: 0;
+    margin: 0;
   }
 
   .footer-nav-col a {
     color: var(--text-tertiary);
     font-size: 14px;
+    text-decoration: none;
     transition: color var(--duration-color) var(--ease-base);
   }
 
   .footer-nav-col a:hover {
-    color: var(--text-primary);
+    color: var(--color-cyan-bright);
   }
 
   .footer-bottom {
@@ -282,5 +408,21 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
 
   .demo-notice {
     color: var(--text-tertiary);
+    max-width: 640px;
+    line-height: 1.5;
   }
 </style>
+
+<script>
+  import { syncTripHeaderCount } from '../scripts/trip';
+
+  window.addEventListener('DOMContentLoaded', () => {
+    syncTripHeaderCount();
+  });
+  window.addEventListener('rentwheels:trip-updated', () => {
+    syncTripHeaderCount();
+  });
+  window.addEventListener('storage', () => {
+    syncTripHeaderCount();
+  });
+</script>
