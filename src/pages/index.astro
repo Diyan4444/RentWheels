@@ -30,132 +30,132 @@ const mumbaiHubs = [
   description="Discover a curated vehicle fleet across Mumbai with transparent 24-hour pricing. Rent cars, motorcycles, scooters, coaches and trucks with one consolidated booking enquiry."
 >
   <!-- ========================================================================
-       1. Cinematic Hero Section — Asymmetric Editorial Canvas
+       TAB 1: Hero Section & Journey Planning Panel with Header_bg
        ======================================================================== -->
-  <section class="hero-canvas" aria-label="Introduction">
-    <!-- Atmospheric Ambient Lighting -->
-    <div class="hero-ambient-spot" aria-hidden="true"></div>
+  <div class="hero-tab1-wrapper">
+    <!-- 1. Cinematic Hero Section — Asymmetric Editorial Canvas -->
+    <section class="hero-canvas" aria-label="Introduction">
+      <!-- Atmospheric Ambient Lighting -->
+      <div class="hero-ambient-spot" aria-hidden="true"></div>
 
-    <div class="container hero-container">
-      <div class="hero-layout">
-        <!-- Hero Editorial Column -->
-        <div class="hero-editorial">
-          <h1 class="hero-headline">
-            <span class="hero-headline-line">More than a ride.</span>
-            <span class="hero-headline-line accent-line">A journey worth taking.</span>
-          </h1>
+      <div class="container hero-container">
+        <div class="hero-layout">
+          <!-- Hero Editorial Column -->
+          <div class="hero-editorial">
+            <h1 class="hero-headline">
+              <span class="hero-headline-line">More than a ride.</span>
+              <span class="hero-headline-line accent-line">A journey worth taking.</span>
+            </h1>
 
-          <p class="hero-narrative">
-            From everyday city drives to memorable road trips, discover a vehicle that makes every journey feel different.
-          </p>
+            <p class="hero-narrative">
+              From everyday city drives to memorable road trips, discover a vehicle that makes every journey feel different.
+            </p>
 
-          <div class="hero-action-row">
-            <a href="/fleet" class="hero-primary-action">
-              <span>Explore the fleet</span>
-              <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-            <a href="#categories" class="hero-secondary-link">
-              <span>Browse classes &darr;</span>
-            </a>
+            <div class="hero-action-row">
+              <a href="/fleet" class="hero-primary-action">
+                <span>Explore the fleet</span>
+                <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <a href="#categories" class="hero-secondary-link">
+                <span>Browse classes &darr;</span>
+              </a>
+            </div>
           </div>
-        </div>
 
-        <!-- Integrated Cinematic Vehicle Visual -->
-        <div class="hero-visual-stage" aria-hidden="true">
-          <div class="car-ambient-glow"></div>
-          <img
-            src={`/${flagshipVehicle.images[0].file}`}
-            alt={flagshipVehicle.images[0].alt}
-            width="1200"
-            height="650"
-            loading="eager"
-            fetchpriority="high"
-            class="cinematic-car-img"
-          />
+          <!-- Integrated Brand Logo Visual -->
+          <div class="hero-visual-stage">
+            <img
+              src="/RentWheels Speed Brand Logo.png"
+              alt="RentWheels Speed Brand Logo"
+              width="800"
+              height="400"
+              loading="eager"
+              fetchpriority="high"
+              class="hero-brand-logo-img"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ========================================================================
-       2. Streamlined Journey Planning Panel (Booking Interface)
-       ======================================================================== -->
-  <section class="planner-section" aria-label="Journey Search">
-    <div class="container planner-container">
-      <form id="heroSearchForm" class="planner-bar" action="/fleet" method="GET">
-        <!-- Segment 1: Location -->
-        <div class="planner-segment">
-          <label for="pickupLocation" class="segment-label">
-            <svg class="field-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-            <span>Pickup Hub</span>
-          </label>
-          <select id="pickupLocation" name="location" class="segment-select">
-            {mumbaiHubs.map((hub) => (
-              <option value={hub.value}>{hub.label}</option>
-            ))}
-          </select>
-        </div>
-
-        <div class="planner-divider" aria-hidden="true"></div>
-
-        <!-- Segment 2: Pickup Schedule -->
-        <div class="planner-segment">
-          <span class="segment-label">
-            <svg class="field-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <span>Pickup Schedule</span>
-          </span>
-          <div class="datetime-cluster">
-            <input type="date" id="pickupDate" name="from" class="segment-input-date" required aria-label="Pickup date" />
-            <input type="time" id="pickupTime" name="pickupTime" value="10:00" class="segment-input-time" required aria-label="Pickup time" />
+    <!-- 2. Streamlined Journey Planning Panel (Booking Interface) -->
+    <section class="planner-section" aria-label="Journey Search">
+      <div class="container planner-container">
+        <form id="heroSearchForm" class="planner-bar" action="/fleet" method="GET">
+          <!-- Segment 1: Location -->
+          <div class="planner-segment">
+            <label for="pickupLocation" class="segment-label">
+              <svg class="field-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Pickup Hub</span>
+            </label>
+            <select id="pickupLocation" name="location" class="segment-select">
+              {mumbaiHubs.map((hub) => (
+                <option value={hub.value}>{hub.label}</option>
+              ))}
+            </select>
           </div>
-        </div>
 
-        <div class="planner-divider" aria-hidden="true"></div>
+          <div class="planner-divider" aria-hidden="true"></div>
 
-        <!-- Segment 3: Return Schedule -->
-        <div class="planner-segment">
-          <span class="segment-label">
-            <svg class="field-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <span>Return Schedule</span>
-          </span>
-          <div class="datetime-cluster">
-            <input type="date" id="returnDate" name="to" class="segment-input-date" required aria-label="Return date" />
-            <input type="time" id="returnTime" name="returnTime" value="10:00" class="segment-input-time" required aria-label="Return time" />
+          <!-- Segment 2: Pickup Schedule -->
+          <div class="planner-segment">
+            <span class="segment-label">
+              <svg class="field-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Pickup Schedule</span>
+            </span>
+            <div class="datetime-cluster">
+              <input type="date" id="pickupDate" name="from" class="segment-input-date" required aria-label="Pickup date" />
+              <input type="time" id="pickupTime" name="pickupTime" value="10:00" class="segment-input-time" required aria-label="Pickup time" />
+            </div>
           </div>
-        </div>
 
-        <!-- Segment 4: Search Action -->
-        <div class="planner-action-segment">
-          <button type="submit" class="planner-submit-btn" aria-label="Search available fleet">
-            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <span>Find vehicles</span>
-          </button>
-        </div>
-      </form>
+          <div class="planner-divider" aria-hidden="true"></div>
 
-      <!-- Restrained Secondary Duration Context -->
-      <div id="heroDurationIndicator" class="planner-duration-hint" aria-live="polite"></div>
-    </div>
-  </section>
+          <!-- Segment 3: Return Schedule -->
+          <div class="planner-segment">
+            <span class="segment-label">
+              <svg class="field-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Return Schedule</span>
+            </span>
+            <div class="datetime-cluster">
+              <input type="date" id="returnDate" name="to" class="segment-input-date" required aria-label="Return date" />
+              <input type="time" id="returnTime" name="returnTime" value="10:00" class="segment-input-time" required aria-label="Return time" />
+            </div>
+          </div>
+
+          <!-- Segment 4: Search Action -->
+          <div class="planner-action-segment">
+            <button type="submit" class="planner-submit-btn" aria-label="Search available fleet">
+              <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Find vehicles</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Restrained Secondary Duration Context -->
+        <div id="heroDurationIndicator" class="planner-duration-hint" aria-live="polite"></div>
+      </div>
+    </section>
+  </div>
 
   <!-- ========================================================================
        3. The Fleet by Category — Editorial Showcase
@@ -356,21 +356,28 @@ const mumbaiHubs = [
 
 <style>
   /* ==========================================================================
-     1. Hero Section — Asymmetric Editorial Canvas
+     Tab 1: Hero Canvas & Journey Planning Panel with Header_bg.jpg
      ========================================================================== */
+  .hero-tab1-wrapper {
+    position: relative;
+    background: linear-gradient(180deg, rgba(7, 21, 34, 0.45) 0%, rgba(7, 21, 34, 0.6) 55%, rgba(7, 21, 34, 0.92) 100%),
+                url('/Header_bg.jpg') center center / cover no-repeat;
+    border-bottom: 1px solid rgba(120, 210, 230, 0.16);
+  }
+
   .hero-canvas {
     position: relative;
-    padding: var(--space-700) 0 var(--space-400);
+    padding: var(--space-700) 0 var(--space-300);
     overflow: hidden;
-    min-height: 75vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
   }
 
   @media (min-width: 1024px) {
     .hero-canvas {
-      min-height: 80vh;
-      padding: var(--space-800) 0 var(--space-600);
+      min-height: 72vh;
+      padding: var(--space-800) 0 var(--space-400);
     }
   }
 
@@ -511,7 +518,7 @@ const mumbaiHubs = [
     color: var(--text-primary);
   }
 
-  /* Integrated Vehicle Stage */
+  /* Integrated Brand Logo Stage */
   .hero-visual-stage {
     position: relative;
     display: flex;
@@ -520,31 +527,19 @@ const mumbaiHubs = [
     width: 100%;
   }
 
-  .car-ambient-glow {
-    position: absolute;
-    width: 90%;
-    height: 80%;
-    background: radial-gradient(ellipse at center, rgba(18, 184, 208, 0.15) 0%, rgba(6, 59, 80, 0.08) 55%, transparent 75%);
-    filter: blur(40px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .cinematic-car-img {
+  .hero-brand-logo-img {
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 680px;
+    max-width: 580px;
     height: auto;
     object-fit: contain;
-    filter: drop-shadow(0 24px 48px rgba(2, 10, 18, 0.7));
-    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 65%, transparent 100%);
-    mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 65%, transparent 100%);
+    filter: drop-shadow(0 20px 40px rgba(2, 10, 18, 0.75));
     transition: transform var(--duration-layout) var(--ease-base);
   }
 
-  .hero-visual-stage:hover .cinematic-car-img {
-    transform: scale(1.015);
+  .hero-visual-stage:hover .hero-brand-logo-img {
+    transform: scale(1.02);
   }
 
   /* ==========================================================================
@@ -552,7 +547,7 @@ const mumbaiHubs = [
      ========================================================================== */
   .planner-section {
     position: relative;
-    padding: var(--space-300) 0 var(--space-700);
+    padding: var(--space-200) 0 var(--space-600);
   }
 
   .planner-container {
