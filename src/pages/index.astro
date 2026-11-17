@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { vehicles } from '../data/vehicles';
+import { formatINR } from '../scripts/pricing';
+
+const bikeCount = vehicles.filter((v) => v.category === 'bike').length;
+const carCount = vehicles.filter((v) => v.category === 'car').length;
+const scooterCount = vehicles.filter((v) => v.category === 'scooter').length;
+const busCount = vehicles.filter((v) => v.category === 'bus').length;
+const truckCount = vehicles.filter((v) => v.category === 'truck').length;
+---
+
+<BaseLayout
+  title="RentWheels — Vehicle Rental Across Mumbai"
+  description="Transparent vehicle rentals across cars, bikes, scooters, buses and trucks in Mumbai. Calculated per 24 hours."
+>
+  <section class="hero-section">
+    <div class="container hero-container">
+      <h1 class="heading-1 hero-title">
+        From a scooter to a bus,<br />rent it with one request
+      </h1>
+      <p class="body-3 hero-subheading">
+        Pick your dates once and every vehicle shows its indicative price for your 24-hour rental periods. Compare options, shortlist what you like, and send a single booking enquiry.
+      </p>
+
+      <div class="proof-line caption-1">
+        15 verified vehicles across 5 categories in Mumbai: {carCount} cars, {bikeCount} bikes, {scooterCount} scooters, {busCount} buses, and {truckCount} trucks.
+      </div>
+
+      <div class="fleet-preview-grid">
+        {vehicles.map((vehicle) => (
+          <article class="preview-card" data-category={vehicle.category}>
+            <div class="preview-card-header">
+              <span class="category-chip caption-3">{vehicle.category}</span>
+              <h2 class="title-2">{vehicle.name}</h2>
+            </div>
+            <p class="caption-2 specs-line">
+              {vehicle.seats} Seats &bull; {vehicle.specs.fuelType}
+              {vehicle.efficiency ? ` • ${vehicle.efficiency.value} ${vehicle.efficiency.unit}` : ''}
+              {vehicle.evSpecs ? ` • ${vehicle.evSpecs.claimedRange}` : ''}
+            </p>
+            <div class="pricing-block">
+              <span class="price-value title-1">{formatINR(vehicle.estimatedRatePer24h)}</span>
+              <span class="price-unit caption-2">estimated per 24 hours</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-section {
+    padding: var(--space-700) 0;
+  }
+
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-300);
+  }
+
+  .hero-title {
+    max-width: 680px;
+    background: linear-gradient(90deg, #ffffff 0%, #9b9b9b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--text-primary);
+  }
+
+  .hero-subheading {
+    max-width: 680px;
+    color: var(--text-secondary);
+  }
+
+  .proof-line {
+    color: var(--text-tertiary);
+    padding-bottom: var(--space-200);
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  .fleet-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-200);
+    margin-top: var(--space-300);
+  }
+
+  @media (min-width: 640px) {
+    .fleet-preview-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .fleet-preview-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .preview-card {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    padding: var(--space-200);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+  }
+
+  .category-chip {
+    display: inline-block;
+    text-transform: uppercase;
+    color: var(--action-primary);
+    letter-spacing: 0.05em;
+  }
+
+  .specs-line {
+    color: var(--text-tertiary);
+  }
+
+  .pricing-block {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-75);
+    margin-top: auto;
+    padding-top: var(--space-100);
+  }
+
+  .price-value {
+    color: var(--action-primary);
+  }
+
+  .price-unit {
+    color: var(--text-tertiary);
+  }
+</style>

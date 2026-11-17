@@ -1,0 +1,286 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'RentWheels — Vehicle Rental Across Mumbai',
+  description = 'Rent cars, bikes, scooters, buses and trucks with one transparent booking enquiry. Transparent 24-hour pricing across Mumbai.',
+  noindex = false,
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="theme-color" content="#181818" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={siteConfig.name} />
+  </head>
+  <body>
+    <!-- Skip to main content landmark (A2, E3) -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- Site Header -->
+    <header class="site-header" role="banner">
+      <div class="container header-container">
+        <a href="/" class="brand-link" aria-label="RentWheels Home">
+          <span class="brand-wordmark">{siteConfig.name}</span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Primary Navigation">
+          <ul class="nav-list" role="list">
+            <li><a href="/fleet" class="nav-link">Fleet</a></li>
+            <li><a href="/about" class="nav-link">About</a></li>
+            <li><a href="/faq" class="nav-link">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <a href="/trip" class="trip-button" id="headerTripBtn" aria-label="View trip">
+            <span>Trip</span>
+            <span class="trip-count-badge" id="headerTripCount" aria-hidden="true">0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Landmark -->
+    <main id="main" role="main">
+      <slot />
+    </main>
+
+    <!-- Accessible Toast Live Region (C1) -->
+    <div id="toastRegion" class="toast-region" role="status" aria-live="polite"></div>
+
+    <!-- Site Footer Landmark (V8) -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="container footer-container">
+        <div class="footer-columns">
+          <div class="footer-brand">
+            <span class="brand-wordmark">{siteConfig.name}</span>
+            <p class="footer-tagline body-6">
+              Vehicle rentals across cars, bikes, scooters, buses and trucks in Mumbai.
+            </p>
+            {siteConfig.contact.email && (
+              <p class="footer-contact caption-2">
+                Enquiries: <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+              </p>
+            )}
+          </div>
+
+          <div class="footer-nav-col">
+            <h2 class="footer-col-title title-4">Fleet</h2>
+            <ul role="list">
+              <li><a href="/fleet/cars">Cars</a></li>
+              <li><a href="/fleet/bikes">Bikes</a></li>
+              <li><a href="/fleet/scooters">Scooters</a></li>
+              <li><a href="/fleet/buses">Buses</a></li>
+              <li><a href="/fleet/trucks">Trucks</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-nav-col">
+            <h2 class="footer-col-title title-4">Company</h2>
+            <ul role="list">
+              <li><a href="/about">About</a></li>
+              <li><a href="/faq">FAQ</a></li>
+              <li><a href="/fleet">All Vehicles</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-nav-col">
+            <h2 class="footer-col-title title-4">Legal</h2>
+            <ul role="list">
+              <li><a href="/terms">Terms</a></li>
+              <li><a href="/privacy">Privacy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="copyright caption-2">&copy; {currentYear} {siteConfig.name}. All rights reserved.</p>
+          {siteConfig.demoMode && (
+            <p class="demo-notice caption-5">
+              Sample fleet and prices for demonstration. Requests are received but no payment is taken.
+            </p>
+          )}
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--surface-nav);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-primary);
+    padding: var(--space-100) 0;
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-200);
+  }
+
+  .brand-wordmark {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-300);
+    list-style: none;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color var(--duration-color) var(--ease-base);
+  }
+
+  .nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  .trip-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-75);
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-control);
+    padding: var(--space-75) var(--space-150, 12px);
+    border-radius: var(--radius-8);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-height: 44px;
+    transition: background-color var(--duration-color) var(--ease-base);
+  }
+
+  .trip-button:hover {
+    background-color: var(--surface-secondary-subtle);
+  }
+
+  .trip-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    font-size: 12px;
+    font-weight: 600;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full);
+  }
+
+  .site-footer {
+    background-color: var(--surface-footer);
+    border-top: 1px solid var(--border-primary);
+    padding: var(--space-700) 0 var(--space-400);
+    margin-top: var(--space-900);
+  }
+
+  .footer-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-400);
+    margin-bottom: var(--space-600);
+  }
+
+  @media (min-width: 640px) {
+    .footer-columns {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+  }
+
+  .footer-tagline {
+    color: var(--text-tertiary);
+    max-width: 320px;
+  }
+
+  .footer-contact a {
+    color: var(--action-primary);
+  }
+
+  .footer-col-title {
+    color: var(--text-primary);
+    margin-bottom: var(--space-150, 12px);
+  }
+
+  .footer-nav-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-75);
+  }
+
+  .footer-nav-col a {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    transition: color var(--duration-color) var(--ease-base);
+  }
+
+  .footer-nav-col a:hover {
+    color: var(--text-primary);
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-300);
+    border-top: 1px solid var(--border-primary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    align-items: flex-start;
+  }
+
+  .copyright {
+    color: var(--text-tertiary);
+  }
+
+  .demo-notice {
+    color: var(--text-tertiary);
+  }
+</style>
