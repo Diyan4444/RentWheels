@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import VehicleCard from '../../components/VehicleCard.astro';
+import { vehicles } from '../../data/vehicles';
+---
+
+<BaseLayout
+  title="Fleet Directory — All Vehicles for Rent in Mumbai | RentWheels"
+  description="Explore our full vehicle fleet in Mumbai: cars, bikes, scooters, buses and trucks. Indicative 24-hour rates, primary verified specifications, and single-request booking enquiries."
+>
+  <div class="container fleet-page-container">
+    <div class="fleet-header">
+      <h1 class="heading-2 page-title">Fleet Directory</h1>
+      <p class="body-3 fleet-subtitle">
+        Explore 15 verified vehicles across 5 categories in Mumbai. Filter by type or search by name.
+      </p>
+    </div>
+
+    <!-- Category Filter Chips -->
+    <div class="filter-bar">
+      <div class="category-chips-list" role="tablist" aria-label="Vehicle Categories">
+        <button type="button" class="chip-btn is-active" data-filter="all">All Vehicles (15)</button>
+        <button type="button" class="chip-btn" data-filter="car">Cars (3)</button>
+        <button type="button" class="chip-btn" data-filter="bike">Bikes (3)</button>
+        <button type="button" class="chip-btn" data-filter="scooter">Scooters (3)</button>
+        <button type="button" class="chip-btn" data-filter="bus">Buses (3)</button>
+        <button type="button" class="chip-btn" data-filter="truck">Trucks (3)</button>
+      </div>
+
+      <!-- Quick Search Input -->
+      <div class="search-box">
+        <input
+          type="search"
+          id="fleetSearchInput"
+          placeholder="Search by vehicle or brand..."
+          class="search-input caption-1"
+          aria-label="Search vehicles by name or brand"
+        />
+      </div>
+    </div>
+
+    <!-- Results Status -->
+    <div class="results-bar caption-2" aria-live="polite">
+      <span id="resultsCountText">Showing all 15 vehicles</span>
+    </div>
+
+    <!-- Vehicle Grid -->
+    <div class="fleet-grid" id="fleetGrid">
+      {vehicles.map((v) => (
+        <VehicleCard vehicle={v} />
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyResultsState" class="empty-state" style="display: none;">
+      <h2 class="title-2">No vehicles match your search</h2>
+      <p class="caption-1">Try clearing your search query or selecting another category.</p>
+      <button type="button" id="btnClearSearch" class="btn-clear button-sm">Clear Search</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .fleet-page-container {
+    padding-top: var(--space-600);
+    padding-bottom: var(--space-900);
+  }
+
+  .fleet-header {
+    margin-bottom: var(--space-400);
+  }
+
+  .page-title {
+    color: var(--text-primary);
+    margin-bottom: var(--space-100);
+  }
+
+  .fleet-subtitle {
+    color: var(--text-secondary);
+    max-width: 680px;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    margin-bottom: var(--space-300);
+    padding-bottom: var(--space-300);
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  @media (min-width: 768px) {
+    .filter-bar {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .category-chips-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-75);
+  }
+
+  .chip-btn {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    color: var(--text-secondary);
+    padding: var(--space-75) var(--space-200);
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .chip-btn:hover {
+    border-color: var(--border-control);
+    color: var(--text-primary);
+  }
+
+  .chip-btn.is-active {
+    background-color: var(--surface-secondary-subtle);
+    border-color: var(--action-primary);
+    color: var(--action-primary);
+  }
+
+  .search-box {
+    min-width: 260px;
+  }
+
+  .search-input {
+    width: 100%;
+    background-color: var(--surface-secondary-subtle);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-8);
+    padding: var(--space-75) var(--space-150, 12px);
+    color: var(--text-primary);
+    min-height: 44px;
+  }
+
+  .results-bar {
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-300);
+  }
+
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-300);
+  }
+
+  @media (min-width: 640px) {
+    .fleet-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .fleet-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-800) var(--space-200);
+    background-color: var(--surface-primary-subtle);
+    border: 1px dashed var(--border-control);
+    border-radius: var(--radius-16);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-150, 12px);
+  }
+
+  .empty-state h2 {
+    color: var(--text-primary);
+  }
+
+  .empty-state p {
+    color: var(--text-tertiary);
+  }
+
+  .btn-clear {
+    margin-top: var(--space-100);
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    border-radius: var(--radius-8);
+    padding: var(--space-75) var(--space-200);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  function initFleetFilters() {
+    const chipBtns = document.querySelectorAll<HTMLButtonElement>('.chip-btn');
+    const searchInput = document.getElementById('fleetSearchInput') as HTMLInputElement;
+    const cards = document.querySelectorAll<HTMLElement>('.vehicle-card');
+    const countText = document.getElementById('resultsCountText');
+    const emptyState = document.getElementById('emptyResultsState');
+    const clearBtn = document.getElementById('btnClearSearch');
+
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    const filterList = () => {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const cat = card.getAttribute('data-category') || '';
+        const title = card.querySelector('.vehicle-title')?.textContent?.toLowerCase() || '';
+
+        const matchesCat = activeFilter === 'all' || cat === activeFilter;
+        const matchesSearch = !searchQuery || title.includes(searchQuery);
+
+        if (matchesCat && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (countText) {
+        countText.textContent = `Showing ${visibleCount} of ${cards.length} vehicles`;
+      }
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'flex' : 'none';
+      }
+    };
+
+    chipBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        chipBtns.forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        activeFilter = btn.getAttribute('data-filter') || 'all';
+        filterList();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        searchQuery = searchInput.value.toLowerCase().trim();
+        filterList();
+      });
+    }
+
+    if (clearBtn && searchInput) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        activeFilter = 'all';
+        chipBtns.forEach((b) => b.classList.toggle('is-active', b.getAttribute('data-filter') === 'all'));
+        filterList();
+      });
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', initFleetFilters);
+</script>

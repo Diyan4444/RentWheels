@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Terms of Service | RentWheels"
+  description="Terms of service and booking enquiry conditions for RentWheels Mumbai."
+  noindex={true}
+>
+  <div class="container legal-page-container">
+    <div class="draft-notice caption-2">
+      Draft pending owner legal review. Figures and policies subject to final execution.
+    </div>
+
+    <h1 class="heading-2 page-title">Terms of Service</h1>
+
+    <div class="legal-content body-3">
+      <h2>1. Purpose of the Website</h2>
+      <p>
+        RentWheels is a discovery and booking enquiry portal for vehicle rentals in the Mumbai Metropolitan Region. Sending an enquiry through this site does not constitute a legally binding reservation, guaranteed vehicle availability, or financial charge.
+      </p>
+
+      <h2>2. Rental Periods and Indicative Pricing</h2>
+      <p>
+        Rates displayed are estimates calculated per 24-hour cycle. Final rental rates, applicable taxes (GST), security deposits, and insurance parameters are finalized directly with the operator upon enquiry confirmation.
+      </p>
+
+      <h2>3. Driver Eligibility & Documentation</h2>
+      <p>
+        Customers must possess a valid, unexpired government-issued driving license appropriate for the vehicle class rented (e.g., transport category for buses, commercial heavy license for trucks, valid two-wheeler license for bikes/scooters). Identity verification (Aadhaar, Passport) is mandatory before vehicle handover.
+      </p>
+
+      <h2>4. Changes and Cancellations</h2>
+      <p>
+        Submitted enquiries can be modified or canceled prior to formal operator confirmation without penalty by contacting support with your reference code.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page-container {
+    padding-top: var(--space-600);
+    padding-bottom: var(--space-900);
+    max-width: 800px;
+  }
+
+  .draft-notice {
+    background-color: rgba(209, 176, 0, 0.15);
+    border: 1px solid var(--color-yellow-500);
+    color: var(--color-yellow-500);
+    padding: var(--space-100) var(--space-200);
+    border-radius: var(--radius-8);
+    margin-bottom: var(--space-400);
+  }
+
+  .page-title {
+    color: var(--text-primary);
+    margin-bottom: var(--space-600);
+  }
+
+  .legal-content {
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-400);
+  }
+
+  .legal-content h2 {
+    color: var(--text-primary);
+    font-size: 18px;
+    margin-bottom: var(--space-100);
+  }
+
+  .legal-content p {
+    line-height: 1.6;
+  }
+</style>

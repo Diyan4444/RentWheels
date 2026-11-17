@@ -1,50 +1,198 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import VehicleCard from '../components/VehicleCard.astro';
 import { vehicles } from '../data/vehicles';
 import { formatINR } from '../scripts/pricing';
 
-const bikeCount = vehicles.filter((v) => v.category === 'bike').length;
-const carCount = vehicles.filter((v) => v.category === 'car').length;
-const scooterCount = vehicles.filter((v) => v.category === 'scooter').length;
-const busCount = vehicles.filter((v) => v.category === 'bus').length;
-const truckCount = vehicles.filter((v) => v.category === 'truck').length;
+const featuredVehicles = vehicles.filter((v) => v.featured);
+const heroVehicle = vehicles.find((v) => v.slug === 'toyota-rav4-hybrid') || vehicles[0];
+
+const categories = [
+  { key: 'car', name: 'Cars', slug: 'cars', count: 3, startingRate: 3100 },
+  { key: 'bike', name: 'Bikes', slug: 'bikes', count: 3, startingRate: 1300 },
+  { key: 'scooter', name: 'Scooters', slug: 'scooters', count: 3, startingRate: 1300 },
+  { key: 'bus', name: 'Buses', slug: 'buses', count: 3, startingRate: 16400 },
+  { key: 'truck', name: 'Trucks', slug: 'trucks', count: 3, startingRate: 8700 },
+];
 ---
 
 <BaseLayout
-  title="RentWheels — Vehicle Rental Across Mumbai"
-  description="Transparent vehicle rentals across cars, bikes, scooters, buses and trucks in Mumbai. Calculated per 24 hours."
+  title="RentWheels — Vehicle Rentals Across Mumbai | Cars, Bikes, Scooters, Buses, Trucks"
+  description="From a scooter to a bus, rent it with one request. Transparent 24-hour pricing across Mumbai, verified primary specs, and genuine booking enquiries."
 >
+  <!-- 1. Hero Section (Classic Layout A) -->
   <section class="hero-section">
     <div class="container hero-container">
-      <h1 class="heading-1 hero-title">
-        From a scooter to a bus,<br />rent it with one request
-      </h1>
-      <p class="body-3 hero-subheading">
-        Pick your dates once and every vehicle shows its indicative price for your 24-hour rental periods. Compare options, shortlist what you like, and send a single booking enquiry.
-      </p>
+      <div class="hero-copy-col">
+        <h1 class="heading-1 hero-title">
+          From a scooter to a bus,<br />rent it with one request
+        </h1>
+        <p class="body-3 hero-subheading">
+          Pick your dates once and every vehicle shows its indicative price for your 24-hour rental periods. Compare options, shortlist what you like, and send a single booking enquiry.
+        </p>
 
-      <div class="proof-line caption-1">
-        15 verified vehicles across 5 categories in Mumbai: {carCount} cars, {bikeCount} bikes, {scooterCount} scooters, {busCount} buses, and {truckCount} trucks.
+        <!-- Request Panel -->
+        <div class="request-panel">
+          <form id="heroRequestForm" class="panel-form" action="/fleet" method="GET">
+            <div class="panel-inputs-row">
+              <div class="panel-field">
+                <label for="heroPickupDate" class="caption-1">Pickup Date</label>
+                <input type="date" id="heroPickupDate" name="from" class="styled-input" />
+              </div>
+              <div class="panel-field">
+                <label for="heroReturnDate" class="caption-1">Return Date</label>
+                <input type="date" id="heroReturnDate" name="to" class="styled-input" />
+              </div>
+              <div class="panel-field">
+                <label for="heroVehicleType" class="caption-1">Vehicle Type</label>
+                <select id="heroVehicleType" name="type" class="styled-input">
+                  <option value="all">All Types (15)</option>
+                  <option value="car">Cars (3)</option>
+                  <option value="bike">Bikes (3)</option>
+                  <option value="scooter">Scooters (3)</option>
+                  <option value="bus">Buses (3)</option>
+                  <option value="truck">Trucks (3)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-find-vehicle button-lg">
+              Find a vehicle
+            </button>
+          </form>
+        </div>
+
+        <p class="proof-line caption-1">
+          15 verified vehicles across 5 types in Mumbai, from ₹1,300 per 24 hours.
+        </p>
       </div>
 
-      <div class="fleet-preview-grid">
-        {vehicles.map((vehicle) => (
-          <article class="preview-card" data-category={vehicle.category}>
-            <div class="preview-card-header">
-              <span class="category-chip caption-3">{vehicle.category}</span>
-              <h2 class="title-2">{vehicle.name}</h2>
-            </div>
-            <p class="caption-2 specs-line">
-              {vehicle.seats} Seats &bull; {vehicle.specs.fuelType}
-              {vehicle.efficiency ? ` • ${vehicle.efficiency.value} ${vehicle.efficiency.unit}` : ''}
-              {vehicle.evSpecs ? ` • ${vehicle.evSpecs.claimedRange}` : ''}
-            </p>
-            <div class="pricing-block">
-              <span class="price-value title-1">{formatINR(vehicle.estimatedRatePer24h)}</span>
-              <span class="price-unit caption-2">estimated per 24 hours</span>
-            </div>
-          </article>
+      <div class="hero-image-col">
+        <div class="hero-image-frame">
+          <img
+            src={`/${heroVehicle.images[0].file}`}
+            alt={heroVehicle.images[0].alt}
+            width="600"
+            height="400"
+            loading="eager"
+            fetchpriority="high"
+            class="hero-img"
+          />
+          <div class="hero-img-badge caption-2">
+            <span>{heroVehicle.name}</span>
+            <span>&bull;</span>
+            <span>{formatINR(heroVehicle.estimatedRatePer24h)} / 24h</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Browse by Type (Editorial Rows) -->
+  <section class="section browse-section">
+    <div class="container">
+      <h2 class="heading-2 section-heading">Browse by type</h2>
+      <div class="category-rows-list">
+        {categories.map((cat) => (
+          <a href={`/fleet/${cat.slug}`} class="category-row-item">
+            <span class="row-name title-1">{cat.name}</span>
+            <span class="row-count caption-1">{cat.count} vehicles</span>
+            <span class="row-rate caption-1">From {formatINR(cat.startingRate)} / 24h</span>
+            <span class="row-arrow" aria-hidden="true">&rarr;</span>
+          </a>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Featured Vehicles -->
+  <section class="section featured-section">
+    <div class="container">
+      <div class="section-header-row">
+        <div>
+          <h2 class="heading-2 section-heading">Featured vehicles</h2>
+          <p class="body-3 section-desc">Popular choices for trips, commutes, and group travel.</p>
+        </div>
+        <a href="/fleet" class="see-all-link caption-1">See all 15 vehicles &rarr;</a>
+      </div>
+
+      <div class="featured-grid">
+        {featuredVehicles.map((v) => (
+          <VehicleCard vehicle={v} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Problem & Solution Section -->
+  <section class="section problem-section">
+    <div class="container problem-container">
+      <h2 class="heading-2 problem-title">
+        Renting for a group should not mean five separate enquiries.
+      </h2>
+      <p class="body-3 problem-body">
+        A family vacation, a corporate offsite, and a goods delivery require very different vehicles. RentWheels lists all five categories in one place, using identical 24-hour rental periods and a unified request form, so you describe your trip once.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. How It Works -->
+  <section class="section how-it-works-section">
+    <div class="container">
+      <h2 class="heading-2 section-heading">How it works</h2>
+      <div class="steps-grid">
+        <div class="step-box">
+          <span class="step-num title-1">01</span>
+          <h3 class="title-2">Choose dates and vehicles</h3>
+          <p class="caption-1 step-text">
+            Select your pickup and return schedule in Mumbai and browse indicative 24-hour rate estimates.
+          </p>
+        </div>
+        <div class="step-box">
+          <span class="step-num title-1">02</span>
+          <h3 class="title-2">Add what you need to your trip</h3>
+          <p class="caption-1 step-text">
+            Combine cars, bikes, scooters, or buses into a single consolidated request.
+          </p>
+        </div>
+        <div class="step-box">
+          <span class="step-num title-1">03</span>
+          <h3 class="title-2">Send one booking enquiry</h3>
+          <p class="caption-1 step-text">
+            Submit your details without paying upfront. Our reservations team confirms availability and final rates.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ Preview -->
+  <section class="section faq-preview-section">
+    <div class="container faq-container">
+      <h2 class="heading-2 section-heading">Questions before you send a request</h2>
+      <div class="faq-list">
+        <details class="faq-card">
+          <summary class="faq-summary title-3">How does a booking request work?</summary>
+          <div class="faq-content body-3">
+            Choose your dates and vehicles, add them to your trip, and submit the enquiry form. RentWheels replies to confirm availability and the final price. Nothing is charged on this website.
+          </div>
+        </details>
+        <details class="faq-card">
+          <summary class="faq-summary title-3">How are the 24-hour rental periods billed?</summary>
+          <div class="faq-content body-3">
+            Rental duration is calculated on consecutive 24-hour cycles starting from your selected pickup time. Any additional commenced period is rounded up to the next full period.
+          </div>
+        </details>
+        <details class="faq-card">
+          <summary class="faq-summary title-3">Can I rent more than one vehicle?</summary>
+          <div class="faq-content body-3">
+            Yes. Add several vehicles to one trip and send a single enquiry.
+          </div>
+        </details>
+      </div>
+
+      <div class="faq-footer-link">
+        <a href="/faq" class="caption-1">Read all frequently asked questions &rarr;</a>
       </div>
     </div>
   </section>
@@ -52,10 +200,24 @@ const truckCount = vehicles.filter((v) => v.category === 'truck').length;
 
 <style>
   .hero-section {
-    padding: var(--space-700) 0;
+    padding: var(--space-700) 0 var(--space-800);
+    border-bottom: 1px solid var(--border-primary);
   }
 
   .hero-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-600);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-container {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+
+  .hero-copy-col {
     display: flex;
     flex-direction: column;
     gap: var(--space-300);
@@ -74,65 +236,293 @@ const truckCount = vehicles.filter((v) => v.category === 'truck').length;
     color: var(--text-secondary);
   }
 
-  .proof-line {
-    color: var(--text-tertiary);
-    padding-bottom: var(--space-200);
-    border-bottom: 1px solid var(--border-primary);
+  .request-panel {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    padding: var(--space-300);
+    margin-top: var(--space-100);
   }
 
-  .fleet-preview-grid {
+  .panel-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .panel-inputs-row {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-200);
-    margin-top: var(--space-300);
+    gap: var(--space-150, 12px);
   }
 
   @media (min-width: 640px) {
-    .fleet-preview-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .panel-inputs-row {
+      grid-template-columns: 1fr 1fr 1.2fr;
     }
   }
 
-  @media (min-width: 1024px) {
-    .fleet-preview-grid {
+  .panel-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-50);
+  }
+
+  .styled-input {
+    background-color: var(--surface-secondary-subtle);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-8);
+    padding: var(--space-75) var(--space-150, 12px);
+    color: var(--text-primary);
+    min-height: 44px;
+    width: 100%;
+  }
+
+  .btn-find-vehicle {
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    border-radius: var(--radius-8);
+    padding: var(--space-150, 12px) var(--space-300);
+    min-height: 48px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--duration-color) var(--ease-base);
+  }
+
+  .btn-find-vehicle:hover {
+    background-color: var(--action-primary-hover);
+  }
+
+  .proof-line {
+    color: var(--text-tertiary);
+  }
+
+  .hero-image-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-16);
+    overflow: hidden;
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-img-badge {
+    position: absolute;
+    bottom: var(--space-150, 12px);
+    left: var(--space-150, 12px);
+    background-color: rgba(24, 24, 24, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-primary);
+    padding: var(--space-50) var(--space-150, 12px);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    gap: var(--space-75);
+    color: var(--text-primary);
+  }
+
+  /* Section Styles */
+  .section {
+    padding: var(--space-800) 0;
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  .section-heading {
+    color: var(--text-primary);
+    margin-bottom: var(--space-200);
+  }
+
+  .section-desc {
+    color: var(--text-secondary);
+  }
+
+  .section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-400);
+  }
+
+  .see-all-link {
+    color: var(--action-primary);
+  }
+
+  /* Category Rows */
+  .category-rows-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-300);
+  }
+
+  .category-row-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr auto;
+    align-items: center;
+    padding: var(--space-200) var(--space-150, 12px);
+    border-bottom: 1px solid var(--border-primary);
+    transition: background-color var(--duration-color) var(--ease-base);
+    border-radius: var(--radius-8);
+  }
+
+  .category-row-item:hover {
+    background-color: var(--surface-secondary);
+  }
+
+  .category-row-item:hover .row-arrow {
+    transform: translateX(4px);
+  }
+
+  .row-name {
+    color: var(--text-primary);
+  }
+
+  .row-count,
+  .row-rate {
+    color: var(--text-tertiary);
+  }
+
+  .row-arrow {
+    color: var(--action-primary);
+    transition: transform var(--duration-color) var(--ease-base);
+  }
+
+  /* Featured Grid */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-300);
+  }
+
+  @media (min-width: 640px) {
+    .featured-grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  .preview-card {
+  /* Problem & Solution */
+  .problem-container {
+    max-width: 800px;
+  }
+
+  .problem-title {
+    color: var(--text-primary);
+    margin-bottom: var(--space-200);
+  }
+
+  .problem-body {
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* How It Works Steps */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-300);
+    margin-top: var(--space-300);
+  }
+
+  @media (min-width: 640px) {
+    .steps-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .step-box {
     background-color: var(--surface-primary-subtle);
     border: 1px solid var(--border-primary);
     border-radius: var(--radius-16);
-    padding: var(--space-200);
+    padding: var(--space-300);
     display: flex;
     flex-direction: column;
     gap: var(--space-100);
   }
 
-  .category-chip {
-    display: inline-block;
-    text-transform: uppercase;
+  .step-num {
     color: var(--action-primary);
-    letter-spacing: 0.05em;
   }
 
-  .specs-line {
+  .step-text {
     color: var(--text-tertiary);
   }
 
-  .pricing-block {
+  /* FAQ Preview */
+  .faq-container {
+    max-width: 800px;
+  }
+
+  .faq-list {
     display: flex;
-    align-items: baseline;
-    gap: var(--space-75);
-    margin-top: auto;
-    padding-top: var(--space-100);
+    flex-direction: column;
+    gap: var(--space-200);
+    margin-top: var(--space-300);
   }
 
-  .price-value {
+  .faq-card {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-12);
+    overflow: hidden;
+  }
+
+  .faq-summary {
+    padding: var(--space-200);
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+
+  .faq-content {
+    padding: 0 var(--space-200) var(--space-200);
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .faq-footer-link {
+    margin-top: var(--space-300);
+  }
+
+  .faq-footer-link a {
     color: var(--action-primary);
-  }
-
-  .price-unit {
-    color: var(--text-tertiary);
   }
 </style>
+
+<script>
+  import { getTodayKolkata } from '../scripts/billing';
+  import { getTripState, saveTripState } from '../scripts/trip';
+
+  function initHeroDates() {
+    const pickup = document.getElementById('heroPickupDate') as HTMLInputElement;
+    const returnDate = document.getElementById('heroReturnDate') as HTMLInputElement;
+    const today = getTodayKolkata();
+
+    if (pickup && returnDate) {
+      pickup.min = today;
+      returnDate.min = today;
+
+      pickup.addEventListener('change', () => {
+        if (pickup.value) returnDate.min = pickup.value;
+      });
+
+      const form = document.getElementById('heroRequestForm') as HTMLFormElement;
+      if (form) {
+        form.addEventListener('submit', () => {
+          const state = getTripState();
+          if (pickup.value) state.pickupDate = pickup.value;
+          if (returnDate.value) state.returnDate = returnDate.value;
+          saveTripState(state);
+        });
+      }
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', initHeroDates);
+</script>

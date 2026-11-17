@@ -1,0 +1,616 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { vehicles, getVehicleBySlug } from '../../data/vehicles';
+import { formatINR } from '../../scripts/pricing';
+
+export function getStaticPaths() {
+  return vehicles.map((v) => ({
+    params: { slug: v.slug },
+    props: { vehicle: v },
+  }));
+}
+
+const { vehicle } = Astro.props;
+const relatedVehicles = vehicles
+  .filter((v) => v.category === vehicle.category && v.slug !== vehicle.slug)
+  .slice(0, 2);
+---
+
+<BaseLayout
+  title={`${vehicle.name} Rental in Mumbai | RentWheels`}
+  description={`Rent the ${vehicle.name} in Mumbai. Verified specifications, 24-hour pricing, indicative rates from ${formatINR(vehicle.estimatedRatePer24h)} per 24 hours.`}
+>
+  <div class="container vehicle-page-container" data-slug={vehicle.slug} data-rate={vehicle.estimatedRatePer24h}>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav caption-2" aria-label="Breadcrumb">
+      <ol class="breadcrumb-list" role="list">
+        <li><a href="/fleet">Fleet</a></li>
+        <li aria-hidden="true">&rsaquo;</li>
+        <li><a href={`/fleet/${vehicle.category}s`}>{vehicle.category}s</a></li>
+        <li aria-hidden="true">&rsaquo;</li>
+        <li aria-current="page">{vehicle.name}</li>
+      </ol>
+    </nav>
+
+    <div class="vehicle-layout-grid">
+      <!-- Left Column: Gallery & Details -->
+      <div class="vehicle-main-column">
+        <!-- Main Image Gallery -->
+        <section class="gallery-section" aria-label="Vehicle Gallery">
+          <div class="main-image-frame">
+            <img
+              id="activeGalleryImage"
+              src={`/${vehicle.images[0].file}`}
+              alt={vehicle.images[0].alt}
+              width="800"
+              height="450"
+              loading="eager"
+              fetchpriority="high"
+              class="active-image"
+            />
+          </div>
+
+          <div class="thumbnails-track">
+            {vehicle.images.map((img, idx) => (
+              <button
+                type="button"
+                class={`thumb-btn ${idx === 0 ? 'is-active' : ''}`}
+                data-src={`/${img.file}`}
+                data-alt={img.alt}
+                aria-label={`View photo ${idx + 1} of ${vehicle.name}`}
+              >
+                <img src={`/${img.file}`} alt={img.alt} width="160" height="106" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <!-- Summary & Suited For -->
+        <section class="overview-section">
+          <h2 class="title-1 section-title">Overview</h2>
+          <p class="body-3 summary-text">{vehicle.summary}</p>
+
+          <div class="suited-for-block">
+            <h3 class="title-3">Well Suited For</h3>
+            <ul class="tags-list" role="list">
+              {vehicle.suitedFor.map((tag) => (
+                <li class="tag-pill caption-2">{tag}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <!-- Technical Specifications Table -->
+        <section class="specs-section">
+          <h2 class="title-1 section-title">Technical Specifications</h2>
+          <div class="specs-table-wrapper">
+            <table class="specs-table">
+              <tbody>
+                <tr>
+                  <th scope="row" class="caption-1">Category</th>
+                  <td class="body-5" style="text-transform: capitalize;">{vehicle.category}</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="caption-1">Brand</th>
+                  <td class="body-5">{vehicle.brand}</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="caption-1">Seating Capacity</th>
+                  <td class="body-5">{vehicle.seats} Passengers</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="caption-1">Fuel / Powertrain</th>
+                  <td class="body-5">{vehicle.specs.fuelType}</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="caption-1">Engine / Motor</th>
+                  <td class="body-5">{vehicle.specs.engineOrMotor}</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="caption-1">Power Output</th>
+                  <td class="body-5">{vehicle.specs.power}</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="caption-1">Transmission</th>
+                  <td class="body-5">{vehicle.specs.transmission}</td>
+                </tr>
+                {vehicle.efficiency && (
+                  <tr>
+                    <th scope="row" class="caption-1">Claimed Fuel Economy</th>
+                    <td class="body-5">{vehicle.efficiency.value} {vehicle.efficiency.unit}</td>
+                  </tr>
+                )}
+                {vehicle.evSpecs && (
+                  <>
+                    <tr>
+                      <th scope="row" class="caption-1">Battery Capacity</th>
+                      <td class="body-5">{vehicle.evSpecs.batteryCapacity}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="caption-1">Electric Driving Range</th>
+                      <td class="body-5">{vehicle.evSpecs.claimedRange}</td>
+                    </tr>
+                  </>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <p class="indicative-disclaimer caption-2">
+            Specifications derived from primary manufacturer sources ({vehicle.specs.sourceUrl}). Figures are indicative for standard configurations.
+          </p>
+        </section>
+      </div>
+
+      <!-- Right Column: Booking Request Panel -->
+      <aside class="booking-aside">
+        <div class="booking-panel">
+          <span class="category-indicator caption-3">{vehicle.category}</span>
+          <h1 class="heading-3 vehicle-headline">{vehicle.name}</h1>
+
+          <div class="rate-callout">
+            <span class="rate-figure title-1">{formatINR(vehicle.estimatedRatePer24h)}</span>
+            <span class="rate-caption caption-2">indicative rate per 24 hours</span>
+          </div>
+
+          <div class="panel-divider"></div>
+
+          <!-- Trip Dates & Duration Calculator -->
+          <div class="calculator-fields">
+            <div class="date-field">
+              <label for="pickupDateInput" class="caption-1">Pickup Date</label>
+              <input type="date" id="pickupDateInput" class="date-input" />
+            </div>
+            <div class="date-field">
+              <label for="returnDateInput" class="caption-1">Return Date</label>
+              <input type="date" id="returnDateInput" class="date-input" />
+            </div>
+          </div>
+
+          <div id="tripCalcSummary" class="calc-summary-block">
+            <div class="summary-line caption-1">
+              <span id="periodSummaryLabel">1 rental period (24 hours)</span>
+              <span id="totalEstimateLabel" class="title-3">{formatINR(vehicle.estimatedRatePer24h)}</span>
+            </div>
+            <p class="tax-note caption-5">Estimated cost. Subject to final quotation upon enquiry.</p>
+          </div>
+
+          <button
+            type="button"
+            id="btnAddToTripDetail"
+            class="btn-primary-action button-md"
+            data-slug={vehicle.slug}
+          >
+            Add to trip
+          </button>
+
+          <a href="/fleet" class="back-link caption-2">&larr; Back to all vehicles</a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Related Vehicles -->
+    {relatedVehicles.length > 0 && (
+      <section class="related-section">
+        <h2 class="title-1">Other {vehicle.category}s in our fleet</h2>
+        <div class="related-grid">
+          {relatedVehicles.map((r) => (
+            <a href={`/vehicles/${r.slug}`} class="related-card">
+              <div class="related-thumb">
+                <img src={`/${r.images[0].file}`} alt={r.name} width="240" height="160" loading="lazy" />
+              </div>
+              <div class="related-info">
+                <span class="title-3">{r.name}</span>
+                <span class="caption-2">{formatINR(r.estimatedRatePer24h)} / 24h</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .vehicle-page-container {
+    padding-top: var(--space-400);
+    padding-bottom: var(--space-800);
+  }
+
+  .breadcrumb-nav {
+    margin-bottom: var(--space-300);
+  }
+
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-75);
+    list-style: none;
+    color: var(--text-tertiary);
+  }
+
+  .breadcrumb-list a {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-list a:hover {
+    color: var(--action-primary);
+  }
+
+  .vehicle-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-400);
+  }
+
+  @media (min-width: 1024px) {
+    .vehicle-layout-grid {
+      grid-template-columns: 1.8fr 1.2fr;
+      align-items: start;
+    }
+  }
+
+  .vehicle-main-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+  }
+
+  .main-image-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-16);
+    overflow: hidden;
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+  }
+
+  .active-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .thumbnails-track {
+    display: flex;
+    gap: var(--space-100);
+    margin-top: var(--space-150, 12px);
+  }
+
+  .thumb-btn {
+    width: 120px;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-8);
+    overflow: hidden;
+    border: 2px solid transparent;
+    background-color: var(--surface-secondary);
+    opacity: 0.7;
+    transition: opacity var(--duration-color) var(--ease-base), border-color var(--duration-color) var(--ease-base);
+  }
+
+  .thumb-btn:hover,
+  .thumb-btn.is-active {
+    opacity: 1;
+    border-color: var(--action-primary);
+  }
+
+  .thumb-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .section-title {
+    color: var(--text-primary);
+    margin-bottom: var(--space-200);
+  }
+
+  .summary-text {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-300);
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-100);
+    list-style: none;
+  }
+
+  .tag-pill {
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-control);
+    padding: var(--space-50) var(--space-150, 12px);
+    border-radius: var(--radius-full);
+    color: var(--text-primary);
+  }
+
+  .specs-table-wrapper {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    overflow: hidden;
+  }
+
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .specs-table th,
+  .specs-table td {
+    padding: var(--space-150, 12px) var(--space-200);
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  .specs-table tr:last-child th,
+  .specs-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .specs-table th {
+    color: var(--text-tertiary);
+    width: 40%;
+  }
+
+  .specs-table td {
+    color: var(--text-primary);
+  }
+
+  .indicative-disclaimer {
+    color: var(--text-tertiary);
+    margin-top: var(--space-100);
+  }
+
+  /* Booking Panel Sticky Aside */
+  .booking-aside {
+    position: sticky;
+    top: 96px;
+  }
+
+  .booking-panel {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    padding: var(--space-400);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .category-indicator {
+    color: var(--action-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .vehicle-headline {
+    color: var(--text-primary);
+  }
+
+  .rate-callout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-25);
+  }
+
+  .rate-figure {
+    color: var(--action-primary);
+  }
+
+  .rate-caption {
+    color: var(--text-tertiary);
+  }
+
+  .panel-divider {
+    height: 1px;
+    background-color: var(--border-primary);
+  }
+
+  .calculator-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-150, 12px);
+  }
+
+  .date-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-50);
+  }
+
+  .date-input {
+    background-color: var(--surface-secondary-subtle);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-8);
+    padding: var(--space-100) var(--space-150, 12px);
+    color: var(--text-primary);
+    min-height: 44px;
+  }
+
+  .calc-summary-block {
+    background-color: var(--surface-secondary);
+    border-radius: var(--radius-8);
+    padding: var(--space-200);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-50);
+  }
+
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-primary);
+  }
+
+  .tax-note {
+    color: var(--text-tertiary);
+  }
+
+  .btn-primary-action {
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    border-radius: var(--radius-8);
+    padding: var(--space-150, 12px) var(--space-300);
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: background-color var(--duration-color) var(--ease-base);
+  }
+
+  .btn-primary-action:hover {
+    background-color: var(--action-primary-hover);
+  }
+
+  .btn-primary-action.is-in-trip {
+    background-color: var(--surface-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-control);
+  }
+
+  .back-link {
+    text-align: center;
+    color: var(--text-tertiary);
+    margin-top: var(--space-100);
+  }
+
+  .back-link:hover {
+    color: var(--action-primary);
+  }
+
+  /* Related Section */
+  .related-section {
+    margin-top: var(--space-800);
+    border-top: 1px solid var(--border-primary);
+    padding-top: var(--space-600);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-300);
+    margin-top: var(--space-300);
+  }
+
+  @media (min-width: 640px) {
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .related-card {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-12);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: var(--space-200);
+    padding: var(--space-100);
+    transition: border-color var(--duration-color) var(--ease-base);
+  }
+
+  .related-card:hover {
+    border-color: var(--action-primary);
+  }
+
+  .related-thumb {
+    width: 100px;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-8);
+    overflow: hidden;
+  }
+
+  .related-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .related-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-25);
+  }
+</style>
+
+<script>
+  import { addToTrip, isInTrip, showToast } from '../../scripts/trip';
+  import { calculateRentalPeriods, getTodayKolkata } from '../../scripts/billing';
+  import { formatINR } from '../../scripts/pricing';
+
+  function initDetailPage() {
+    const pageContainer = document.querySelector('.vehicle-page-container');
+    const slug = pageContainer?.getAttribute('data-slug') || '';
+    const baseRate = Number(pageContainer?.getAttribute('data-rate') || 0);
+
+    // Gallery Thumbnails
+    const activeImg = document.getElementById('activeGalleryImage') as HTMLImageElement;
+    const thumbBtns = document.querySelectorAll<HTMLButtonElement>('.thumb-btn');
+
+    thumbBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const src = btn.getAttribute('data-src');
+        const alt = btn.getAttribute('data-alt');
+        if (src && activeImg) {
+          activeImg.src = src;
+          if (alt) activeImg.alt = alt;
+          thumbBtns.forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+        }
+      });
+    });
+
+    // Date Calculator
+    const pickupInput = document.getElementById('pickupDateInput') as HTMLInputElement;
+    const returnInput = document.getElementById('returnDateInput') as HTMLInputElement;
+    const periodLabel = document.getElementById('periodSummaryLabel');
+    const totalLabel = document.getElementById('totalEstimateLabel');
+
+    const today = getTodayKolkata();
+    if (pickupInput && returnInput) {
+      pickupInput.min = today;
+      returnInput.min = today;
+
+      const updateCalculations = () => {
+        if (!pickupInput.value || !returnInput.value) return;
+        const res = calculateRentalPeriods(pickupInput.value, returnInput.value);
+        if (res.valid && periodLabel && totalLabel) {
+          periodLabel.textContent = `${res.periods} period${res.periods > 1 ? 's' : ''} (${res.periods * 24} hours)`;
+          totalLabel.textContent = formatINR(baseRate * res.periods);
+        }
+      };
+
+      pickupInput.addEventListener('change', () => {
+        if (pickupInput.value) returnInput.min = pickupInput.value;
+        updateCalculations();
+      });
+      returnInput.addEventListener('change', updateCalculations);
+    }
+
+    // Add to Trip Button
+    const addBtn = document.getElementById('btnAddToTripDetail') as HTMLButtonElement;
+    if (addBtn) {
+      const vehicleSlug = addBtn.getAttribute('data-slug');
+      if (vehicleSlug && isInTrip(vehicleSlug)) {
+        addBtn.textContent = 'In your trip';
+        addBtn.classList.add('is-in-trip');
+      }
+
+      addBtn.addEventListener('click', () => {
+        if (!vehicleSlug) return;
+        const res = addToTrip(vehicleSlug);
+        showToast(res.message);
+        if (res.success) {
+          addBtn.textContent = 'In your trip';
+          addBtn.classList.add('is-in-trip');
+        }
+      });
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', initDetailPage);
+</script>

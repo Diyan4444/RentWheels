@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Frequently Asked Questions | RentWheels"
+  description="Answers to common questions regarding vehicle booking enquiries, 24-hour rental periods, and fleet availability in Mumbai."
+>
+  <div class="container faq-page-container">
+    <div class="faq-hero">
+      <h1 class="heading-2">Frequently Asked Questions</h1>
+      <p class="body-3 intro-lead">
+        Find straightforward answers about how booking requests, pricing estimates, and vehicle selections work on RentWheels.
+      </p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary class="faq-question title-2">How does a booking request work?</summary>
+        <div class="faq-answer body-3">
+          Choose your pickup and return dates, select any number of vehicles across cars, bikes, scooters, buses, or trucks, and submit the enquiry form. Our Mumbai reservations team verifies fleet scheduling and contacts you directly to confirm availability and the final quotation. No payment is charged on this website.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question title-2">How is the 24-hour rental duration calculated?</summary>
+        <div class="faq-answer body-3">
+          Rental periods are calculated on consecutive 24-hour cycles starting from your chosen pickup time in Mumbai (Asia/Kolkata timezone). Any additional started 24-hour period is rounded up to the next full period. For example, a rental from 10:00 AM on Monday to 10:00 AM on Wednesday equals exactly 2 rental periods (48 hours).
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question title-2">Can I rent more than one vehicle in a single request?</summary>
+        <div class="faq-answer body-3">
+          Yes. You can add up to 5 vehicles from different categories (for instance, a luxury coach and two scooters for a family outing) into a single trip enquiry.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question title-2">Can I change my dates after adding vehicles?</summary>
+        <div class="faq-answer body-3">
+          Yes, at any time before submitting your enquiry: simply change your dates on the Trip page, and all period calculations and total estimates update automatically. Once submitted, contact our support team quoting your reference number.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question title-2">What happens after I send a request?</summary>
+        <div class="faq-answer body-3">
+          You will receive a unique reference code on the confirmation screen immediately. Our operations team reviews your requested dates, vehicle availability, and documents, then reaches out via phone or email with a confirmed reservation.
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question title-2">Do I need an account to use RentWheels?</summary>
+        <div class="faq-answer body-3">
+          No. Your trip selections and dates are stored securely in your browser on your current device. There is no account or password required to browse or submit an enquiry.
+        </div>
+      </details>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .faq-page-container {
+    padding-top: var(--space-600);
+    padding-bottom: var(--space-900);
+    max-width: 800px;
+  }
+
+  .faq-hero {
+    margin-bottom: var(--space-600);
+  }
+
+  .intro-lead {
+    color: var(--text-secondary);
+    margin-top: var(--space-100);
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-300);
+  }
+
+  .faq-item {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-12);
+    overflow: hidden;
+    transition: border-color var(--duration-color) var(--ease-base);
+  }
+
+  .faq-item:hover {
+    border-color: var(--border-control);
+  }
+
+  .faq-question {
+    padding: var(--space-300);
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::after {
+    content: '+';
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--action-primary);
+    transition: transform var(--duration-color) var(--ease-base);
+  }
+
+  .faq-item[open] .faq-question::after {
+    content: '\2212'; /* minus sign */
+  }
+
+  .faq-answer {
+    padding: 0 var(--space-300) var(--space-300);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+</style>

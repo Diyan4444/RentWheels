@@ -1,0 +1,561 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { vehicles } from '../../data/vehicles';
+---
+
+<BaseLayout
+  title="Your Trip & Booking Enquiry | RentWheels"
+  description="Review your selected vehicles, choose your rental dates, and send a booking enquiry. No payment taken."
+  noindex={true}
+>
+  <div class="container trip-page-container">
+    <h1 class="heading-2 page-title">Your Trip Request</h1>
+    <p class="body-3 trip-intro">
+      Review your selected vehicles, set your dates, and submit a single booking enquiry.
+    </p>
+
+    <!-- Empty State -->
+    <div id="tripEmptyState" class="empty-trip-box" style="display: none;">
+      <h2 class="title-1">Your trip is currently empty</h2>
+      <p class="body-3 empty-desc">
+        Browse our fleet to add cars, bikes, scooters, buses, or trucks to your trip.
+      </p>
+      <div class="empty-actions">
+        <a href="/fleet" class="btn-browse button-md">Browse the Fleet</a>
+      </div>
+    </div>
+
+    <!-- Active Trip Content -->
+    <div id="tripActiveContent" class="trip-layout-grid">
+      <!-- Left Column: Dates & Vehicle Items -->
+      <div class="trip-items-col">
+        <!-- Date Selection Card -->
+        <section class="trip-card dates-card">
+          <h2 class="title-2 card-heading">1. Rental Schedule</h2>
+          <div class="dates-row">
+            <div class="input-group">
+              <label for="tripPickupDate" class="caption-1">Pickup Date</label>
+              <input type="date" id="tripPickupDate" class="styled-input" />
+            </div>
+            <div class="input-group">
+              <label for="tripReturnDate" class="caption-1">Return Date</label>
+              <input type="date" id="tripReturnDate" class="styled-input" />
+            </div>
+          </div>
+          <div class="duration-badge-row">
+            <span id="tripDurationBadge" class="duration-badge caption-1">Select dates to calculate duration</span>
+          </div>
+        </section>
+
+        <!-- Selected Vehicles List -->
+        <section class="trip-card items-card">
+          <div class="card-header-row">
+            <h2 class="title-2 card-heading">2. Selected Vehicles</h2>
+            <span id="itemsCountBadge" class="caption-2 items-badge">0 vehicles</span>
+          </div>
+          <div id="tripVehiclesList" class="trip-vehicles-list">
+            <!-- Dynamically populated via trip.ts -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Cost Summary & Enquiry Form -->
+      <aside class="trip-summary-col">
+        <div class="summary-card">
+          <h2 class="title-2 card-heading">3. Indicative Estimate</h2>
+
+          <div class="cost-breakdown-list" id="costBreakdownList">
+            <!-- Cost items populated by client -->
+          </div>
+
+          <div class="total-row">
+            <span class="title-3">Estimated Total</span>
+            <span id="grandTotalDisplay" class="heading-4 total-price">₹0</span>
+          </div>
+
+          <p class="estimate-disclaimer caption-5">
+            Rates are indicative per 24 hours. No payment is taken on this site. Final availability and pricing will be confirmed in our reply.
+          </p>
+
+          <div class="form-divider"></div>
+
+          <!-- Netlify Booking Enquiry Form -->
+          <form
+            name="booking-request"
+            id="bookingForm"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            class="enquiry-form"
+          >
+            <input type="hidden" name="form-name" value="booking-request" />
+            <p class="hidden-honeypot" style="display:none">
+              <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+            <input type="hidden" name="reference" id="formReferenceInput" value="" />
+            <input type="hidden" name="dates_summary" id="formDatesInput" value="" />
+            <input type="hidden" name="vehicles_summary" id="formVehiclesInput" value="" />
+            <input type="hidden" name="estimated_total" id="formTotalInput" value="" />
+
+            <div class="form-group">
+              <label for="custName" class="caption-1">Full Name *</label>
+              <input type="text" id="custName" name="name" required class="styled-input" placeholder="Your full name" />
+            </div>
+
+            <div class="form-group">
+              <label for="custMobile" class="caption-1">Mobile Number (India) *</label>
+              <input
+                type="tel"
+                id="custMobile"
+                name="mobile"
+                required
+                pattern="^[6-9]\d{9}$"
+                class="styled-input"
+                placeholder="10-digit mobile number"
+              />
+              <span class="field-hint caption-5">Starts with 6, 7, 8 or 9 (10 digits)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="custEmail" class="caption-1">Email Address</label>
+              <input type="email" id="custEmail" name="email" class="styled-input" placeholder="you@example.com" />
+            </div>
+
+            <div class="form-group">
+              <label for="custLocation" class="caption-1">Preferred Pickup Area in Mumbai *</label>
+              <select id="custLocation" name="pickup_location" required class="styled-input">
+                <option value="">Select location</option>
+                <option value="Bandra / BKC">Bandra / BKC</option>
+                <option value="Andheri / Airport T1-T2">Andheri / Airport T1-T2</option>
+                <option value="South Mumbai / Colaba">South Mumbai / Colaba</option>
+                <option value="Navi Mumbai / Vashi">Navi Mumbai / Vashi</option>
+                <option value="Thane">Thane</option>
+              </select>
+            </div>
+
+            <div class="form-checkbox-group">
+              <label class="checkbox-label caption-2">
+                <input type="checkbox" id="licenseCheckbox" required />
+                <span>I confirm that I hold a valid driving license for each vehicle category in my trip.</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="custNotes" class="caption-1">Special Requirements (Optional)</label>
+              <textarea id="custNotes" name="notes" rows="2" maxlength="500" class="styled-input" placeholder="Any special requests or luggage requirements..."></textarea>
+            </div>
+
+            <div id="formErrorMessage" class="form-error-banner caption-2" style="display: none;"></div>
+
+            <button type="submit" id="btnSubmitEnquiry" class="btn-send-enquiry button-md">
+              Send Booking Enquiry
+            </button>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .trip-page-container {
+    padding-top: var(--space-600);
+    padding-bottom: var(--space-900);
+  }
+
+  .page-title {
+    color: var(--text-primary);
+  }
+
+  .trip-intro {
+    color: var(--text-secondary);
+    margin-top: var(--space-75);
+    margin-bottom: var(--space-600);
+  }
+
+  .trip-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-400);
+  }
+
+  @media (min-width: 1024px) {
+    .trip-layout-grid {
+      grid-template-columns: 1.6fr 1.4fr;
+      align-items: start;
+    }
+  }
+
+  .trip-card {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    padding: var(--space-300);
+    margin-bottom: var(--space-400);
+  }
+
+  .card-heading {
+    color: var(--text-primary);
+    margin-bottom: var(--space-200);
+  }
+
+  .dates-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-200);
+  }
+
+  @media (min-width: 640px) {
+    .dates-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-50);
+  }
+
+  .styled-input {
+    background-color: var(--surface-secondary-subtle);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-8);
+    padding: var(--space-75) var(--space-150, 12px);
+    color: var(--text-primary);
+    min-height: 44px;
+    width: 100%;
+  }
+
+  .styled-input:focus {
+    border-color: var(--action-primary);
+  }
+
+  .duration-badge-row {
+    margin-top: var(--space-200);
+  }
+
+  .duration-badge {
+    display: inline-block;
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    padding: var(--space-50) var(--space-150, 12px);
+    border-radius: var(--radius-full);
+    color: var(--text-primary);
+  }
+
+  .card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-200);
+  }
+
+  .items-badge {
+    color: var(--text-tertiary);
+  }
+
+  .trip-vehicles-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  /* Right Summary Box */
+  .summary-card {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    padding: var(--space-400);
+  }
+
+  .cost-breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    margin-bottom: var(--space-200);
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-200);
+    border-top: 1px solid var(--border-primary);
+    margin-bottom: var(--space-100);
+  }
+
+  .total-price {
+    color: var(--action-primary);
+  }
+
+  .estimate-disclaimer {
+    color: var(--text-tertiary);
+  }
+
+  .form-divider {
+    height: 1px;
+    background-color: var(--border-primary);
+    margin: var(--space-300) 0;
+  }
+
+  .enquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-50);
+  }
+
+  .field-hint {
+    color: var(--text-tertiary);
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-75);
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .btn-send-enquiry {
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    border-radius: var(--radius-8);
+    padding: var(--space-150, 12px) var(--space-300);
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: background-color var(--duration-color) var(--ease-base);
+    margin-top: var(--space-100);
+  }
+
+  .btn-send-enquiry:hover {
+    background-color: var(--action-primary-hover);
+  }
+
+  .form-error-banner {
+    background-color: rgba(229, 72, 77, 0.15);
+    border: 1px solid var(--text-error);
+    color: var(--text-error);
+    padding: var(--space-100);
+    border-radius: var(--radius-8);
+  }
+
+  /* Empty State */
+  .empty-trip-box {
+    text-align: center;
+    padding: var(--space-800) var(--space-200);
+    background-color: var(--surface-primary-subtle);
+    border: 1px dashed var(--border-control);
+    border-radius: var(--radius-16);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-200);
+  }
+
+  .empty-desc {
+    color: var(--text-secondary);
+    max-width: 500px;
+  }
+
+  .btn-browse {
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    padding: var(--space-100) var(--space-300);
+    border-radius: var(--radius-8);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  import { getTripState, saveTripState, removeFromTrip, showToast } from '../../scripts/trip';
+  import { calculateRentalPeriods, getTodayKolkata } from '../../scripts/billing';
+  import { vehicles } from '../../data/vehicles';
+  import { formatINR } from '../../scripts/pricing';
+
+  function initTripPage() {
+    const emptyBox = document.getElementById('tripEmptyState');
+    const activeContent = document.getElementById('tripActiveContent');
+    const listEl = document.getElementById('tripVehiclesList');
+    const countBadge = document.getElementById('itemsCountBadge');
+    const costListEl = document.getElementById('costBreakdownList');
+    const grandTotalEl = document.getElementById('grandTotalDisplay');
+    const durationBadge = document.getElementById('tripDurationBadge');
+
+    const pickupInput = document.getElementById('tripPickupDate') as HTMLInputElement;
+    const returnInput = document.getElementById('tripReturnDate') as HTMLInputElement;
+
+    const today = getTodayKolkata();
+    if (pickupInput && returnInput) {
+      pickupInput.min = today;
+      returnInput.min = today;
+    }
+
+    const render = () => {
+      const state = getTripState();
+      const selectedVehicles = state.items
+        .map((slug) => vehicles.find((v) => v.slug === slug))
+        .filter(Boolean);
+
+      if (selectedVehicles.length === 0) {
+        if (emptyBox) emptyBox.style.display = 'flex';
+        if (activeContent) activeContent.style.display = 'none';
+        return;
+      }
+
+      if (emptyBox) emptyBox.style.display = 'none';
+      if (activeContent) activeContent.style.display = 'grid';
+
+      if (countBadge) countBadge.textContent = `${selectedVehicles.length} vehicle${selectedVehicles.length > 1 ? 's' : ''}`;
+
+      // Date calculations
+      let periods = 1;
+      const pVal = pickupInput?.value || state.pickupDate;
+      const rVal = returnInput?.value || state.returnDate;
+
+      if (pVal && rVal) {
+        const res = calculateRentalPeriods(pVal, rVal);
+        if (res.valid) {
+          periods = res.periods;
+          if (durationBadge) {
+            durationBadge.textContent = `${periods} period${periods > 1 ? 's' : ''} (${periods * 24} hours)`;
+          }
+        }
+      }
+
+      // Render items
+      if (listEl) {
+        listEl.innerHTML = '';
+        selectedVehicles.forEach((v) => {
+          if (!v) return;
+          const itemTotal = v.estimatedRatePer24h * periods;
+
+          const row = document.createElement('div');
+          row.style.cssText =
+            'display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--surface-secondary); border-radius: 8px; gap: 12px;';
+          row.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="/${v.images[0].file}" alt="${v.name}" style="width: 72px; height: 48px; object-fit: cover; border-radius: 4px;" />
+              <div>
+                <a href="/vehicles/${v.slug}" style="font-weight: 600; color: var(--text-primary);">${v.name}</a>
+                <div style="font-size: 12px; color: var(--text-tertiary);">${v.category} &bull; ${formatINR(v.estimatedRatePer24h)} / 24h</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <span style="font-weight: 600; color: var(--text-primary);">${formatINR(itemTotal)}</span>
+              <button type="button" class="btn-remove-item" data-slug="${v.slug}" style="background: none; border: none; color: var(--text-error); font-size: 13px; cursor: pointer;">Remove</button>
+            </div>
+          `;
+          listEl.appendChild(row);
+        });
+
+        // Bind remove buttons
+        listEl.querySelectorAll('.btn-remove-item').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const slug = (e.currentTarget as HTMLElement).getAttribute('data-slug');
+            if (slug) {
+              removeFromTrip(slug);
+              showToast('Vehicle removed from trip');
+              render();
+            }
+          });
+        });
+      }
+
+      // Render Cost Breakdown
+      let grandTotal = 0;
+      if (costListEl) {
+        costListEl.innerHTML = '';
+        selectedVehicles.forEach((v) => {
+          if (!v) return;
+          const itemTotal = v.estimatedRatePer24h * periods;
+          grandTotal += itemTotal;
+
+          const line = document.createElement('div');
+          line.style.cssText = 'display: flex; justify-content: space-between; font-size: 14px; color: var(--text-secondary);';
+          line.innerHTML = `
+            <span>${v.name} (${periods} &times; ${formatINR(v.estimatedRatePer24h)})</span>
+            <span>${formatINR(itemTotal)}</span>
+          `;
+          costListEl.appendChild(line);
+        });
+      }
+
+      if (grandTotalEl) {
+        grandTotalEl.textContent = formatINR(grandTotal);
+      }
+    };
+
+    if (pickupInput && returnInput) {
+      pickupInput.addEventListener('change', () => {
+        if (pickupInput.value) returnInput.min = pickupInput.value;
+        const state = getTripState();
+        state.pickupDate = pickupInput.value;
+        saveTripState(state);
+        render();
+      });
+      returnInput.addEventListener('change', () => {
+        const state = getTripState();
+        state.returnDate = returnInput.value;
+        saveTripState(state);
+        render();
+      });
+    }
+
+    // Form Submission
+    const form = document.getElementById('bookingForm') as HTMLFormElement;
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const state = getTripState();
+        if (state.items.length === 0) {
+          alert('Please add at least one vehicle to your trip before submitting.');
+          return;
+        }
+
+        // Generate Reference code: RW + 6 random chars
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let ref = 'RW';
+        for (let i = 0; i < 6; i++) {
+          ref += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        const selectedVehicles = state.items
+          .map((slug) => vehicles.find((v) => v.slug === slug))
+          .filter(Boolean);
+
+        const summary = {
+          reference: ref,
+          pickupDate: pickupInput?.value || 'Unspecified',
+          returnDate: returnInput?.value || 'Unspecified',
+          vehicles: selectedVehicles.map((v) => ({ name: v?.name, category: v?.category, rate: v?.estimatedRatePer24h })),
+          submittedAt: new Date().toISOString(),
+        };
+
+        // Save in sessionStorage
+        sessionStorage.setItem('rentwheels.last_enquiry', JSON.stringify(summary));
+
+        // Clear trip state
+        state.items = [];
+        saveTripState(state);
+
+        // Navigate to confirmation page
+        window.location.href = `/trip/sent?ref=${ref}`;
+      });
+    }
+
+    render();
+  }
+
+  window.addEventListener('DOMContentLoaded', initTripPage);
+  window.addEventListener('rentwheels:trip-updated', initTripPage);
+</script>

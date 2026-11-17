@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { vehicles } from '../data/vehicles';
+import { formatINR } from '../scripts/pricing';
+---
+
+<BaseLayout
+  title="Compare Vehicles | RentWheels"
+  description="Compare specifications, seats, and 24-hour rental rates side by side."
+  noindex={true}
+>
+  <div class="container compare-page-container">
+    <h1 class="heading-2">Compare Vehicles</h1>
+    <p class="body-3 intro-lead">
+      Put up to three vehicles side by side: seating capacity, daily rates, and verified technical specifications.
+    </p>
+
+    <div class="compare-table-wrapper">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th class="caption-1">Attribute</th>
+            {vehicles.slice(0, 3).map((v) => (
+              <th class="vehicle-col">
+                <img src={`/${v.images[0].file}`} alt={v.name} width="160" height="106" style="border-radius: 8px; margin-bottom: 8px;" />
+                <div class="title-3">{v.name}</div>
+                <div class="caption-2" style="color: var(--action-primary);">{formatINR(v.estimatedRatePer24h)} / 24h</div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="caption-1">Category</th>
+            {vehicles.slice(0, 3).map((v) => <td class="caption-1" style="text-transform: capitalize;">{v.category}</td>)}
+          </tr>
+          <tr>
+            <th scope="row" class="caption-1">Seating</th>
+            {vehicles.slice(0, 3).map((v) => <td class="caption-1">{v.seats} Seats</td>)}
+          </tr>
+          <tr>
+            <th scope="row" class="caption-1">Fuel Type</th>
+            {vehicles.slice(0, 3).map((v) => <td class="caption-1">{v.specs.fuelType}</td>)}
+          </tr>
+          <tr>
+            <th scope="row" class="caption-1">Power Output</th>
+            {vehicles.slice(0, 3).map((v) => <td class="caption-1">{v.specs.power}</td>)}
+          </tr>
+          <tr>
+            <th scope="row" class="caption-1">Transmission</th>
+            {vehicles.slice(0, 3).map((v) => <td class="caption-1">{v.specs.transmission}</td>)}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions-row">
+      <a href="/fleet" class="btn-primary button-md">Back to Fleet</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .compare-page-container {
+    padding-top: var(--space-600);
+    padding-bottom: var(--space-900);
+  }
+
+  .intro-lead {
+    color: var(--text-secondary);
+    margin-top: var(--space-75);
+    margin-bottom: var(--space-600);
+  }
+
+  .compare-table-wrapper {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    overflow-x: auto;
+    margin-bottom: var(--space-600);
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding: var(--space-200);
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  .compare-table th {
+    color: var(--text-tertiary);
+    background-color: var(--surface-secondary);
+  }
+
+  .compare-table td {
+    color: var(--text-primary);
+  }
+
+  .vehicle-col {
+    min-width: 220px;
+  }
+
+  .actions-row {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .btn-primary {
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    padding: var(--space-100) var(--space-300);
+    border-radius: var(--radius-8);
+    font-weight: 600;
+  }
+</style>

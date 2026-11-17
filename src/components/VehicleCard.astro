@@ -1,0 +1,228 @@
+---
+import type { Vehicle } from '../data/vehicles';
+import { formatINR } from '../scripts/pricing';
+
+interface Props {
+  vehicle: Vehicle;
+}
+
+const { vehicle } = Astro.props;
+const mainImage = vehicle.images[0];
+---
+
+<article class="vehicle-card" data-slug={vehicle.slug} data-category={vehicle.category}>
+  <div class="card-image-wrapper">
+    <a href={`/vehicles/${vehicle.slug}`} class="image-link" tabindex="-1" aria-hidden="true">
+      <img
+        src={`/${mainImage.file}`}
+        alt={mainImage.alt}
+        width="400"
+        height="267"
+        loading="lazy"
+        decoding="async"
+        class="card-image"
+      />
+    </a>
+  </div>
+
+  <div class="card-content">
+    <div class="card-header">
+      <span class="category-badge caption-3">{vehicle.category}</span>
+      <h3 class="title-2 vehicle-title">
+        <a href={`/vehicles/${vehicle.slug}`} class="title-link">{vehicle.name}</a>
+      </h3>
+    </div>
+
+    <p class="caption-2 specs-line">
+      <span>💺 {vehicle.seats} Seats</span>
+      <span>&bull;</span>
+      <span>{vehicle.specs.fuelType}</span>
+      {vehicle.efficiency && (
+        <>
+          <span>&bull;</span>
+          <span>{vehicle.efficiency.value} {vehicle.efficiency.unit}</span>
+        </>
+      )}
+      {vehicle.evSpecs && (
+        <>
+          <span>&bull;</span>
+          <span>{vehicle.evSpecs.claimedRange}</span>
+        </>
+      )}
+    </p>
+
+    <div class="card-footer">
+      <div class="price-container">
+        <span class="price-amount title-1">{formatINR(vehicle.estimatedRatePer24h)}</span>
+        <span class="price-period caption-2">per 24 hours</span>
+      </div>
+
+      <div class="card-actions">
+        <button
+          type="button"
+          class="btn-add-trip button-sm"
+          data-slug={vehicle.slug}
+          aria-label={`Add ${vehicle.name} to trip`}
+        >
+          Add to trip
+        </button>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .vehicle-card {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    padding: var(--space-75);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--duration-color) var(--ease-base);
+  }
+
+  .vehicle-card:hover {
+    border-color: var(--border-control);
+  }
+
+  .card-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-8);
+    overflow: hidden;
+    background-color: var(--surface-secondary);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-layout) var(--ease-base);
+  }
+
+  .vehicle-card:hover .card-image {
+    transform: scale(1.02);
+  }
+
+  .card-content {
+    padding: var(--space-200);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: var(--space-100);
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-50);
+  }
+
+  .category-badge {
+    color: var(--action-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .vehicle-title {
+    color: var(--text-primary);
+    min-height: 28px;
+  }
+
+  .title-link {
+    color: inherit;
+    transition: color var(--duration-color) var(--ease-base);
+  }
+
+  .title-link:hover {
+    color: var(--action-primary);
+  }
+
+  .specs-line {
+    color: var(--text-tertiary);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-50);
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--space-200);
+    border-top: 1px solid var(--border-primary);
+    gap: var(--space-100);
+  }
+
+  .price-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .price-amount {
+    color: var(--text-primary);
+  }
+
+  .price-period {
+    color: var(--text-tertiary);
+  }
+
+  .btn-add-trip {
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-control);
+    color: var(--text-primary);
+    padding: var(--space-75) var(--space-150, 12px);
+    border-radius: var(--radius-8);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--duration-color) var(--ease-base),
+      border-color var(--duration-color) var(--ease-base);
+  }
+
+  .btn-add-trip:hover {
+    background-color: var(--surface-secondary-subtle);
+    border-color: var(--action-primary);
+  }
+
+  .btn-add-trip.is-added {
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    border-color: var(--action-primary);
+  }
+</style>
+
+<script>
+  import { addToTrip, isInTrip, showToast } from '../scripts/trip';
+
+  function initCards() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.btn-add-trip');
+    buttons.forEach((btn) => {
+      const slug = btn.getAttribute('data-slug');
+      if (!slug) return;
+
+      if (isInTrip(slug)) {
+        btn.textContent = 'In your trip';
+        btn.classList.add('is-added');
+      }
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const res = addToTrip(slug);
+        showToast(res.message);
+        if (res.success) {
+          btn.textContent = 'In your trip';
+          btn.classList.add('is-added');
+        }
+      });
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', initCards);
+  window.addEventListener('rentwheels:trip-updated', initCards);
+</script>

@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Booking Enquiry Received | RentWheels"
+  description="Your vehicle booking enquiry has been received by RentWheels Mumbai."
+  noindex={true}
+>
+  <div class="container sent-page-container">
+    <div class="confirmation-card">
+      <div class="status-icon" aria-hidden="true">&#10003;</div>
+      <h1 class="heading-2">Booking Enquiry Received</h1>
+      <p class="body-3 confirmation-intro">
+        Thank you for submitting your rental enquiry. Our Mumbai reservations team has received your request.
+      </p>
+
+      <div class="reference-box">
+        <span class="caption-2 ref-label">Enquiry Reference Number</span>
+        <span id="referenceCodeDisplay" class="reference-code title-1">RW------</span>
+      </div>
+
+      <div class="next-steps-block">
+        <h2 class="title-3">What happens next:</h2>
+        <ol class="steps-list" role="list">
+          <li class="caption-1">
+            <strong>Availability Check:</strong> We verify fleet availability for your requested 24-hour periods in Mumbai.
+          </li>
+          <li class="caption-1">
+            <strong>Operator Confirmation:</strong> Our team contacts you via your phone or email to confirm pickup location, documents, and final pricing.
+          </li>
+          <li class="caption-1">
+            <strong>No Upfront Charge:</strong> This submission is an enquiry, not an instant charge. Payment is handled directly upon confirmation.
+          </li>
+        </ol>
+      </div>
+
+      <div class="action-buttons">
+        <a href="/fleet" class="btn-primary button-md">Back to the Fleet</a>
+        <a href="/" class="btn-secondary button-md">Return Home</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .sent-page-container {
+    padding-top: var(--space-800);
+    padding-bottom: var(--space-900);
+    display: flex;
+    justify-content: center;
+  }
+
+  .confirmation-card {
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-16);
+    padding: var(--space-600) var(--space-400);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-300);
+  }
+
+  .status-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    background-color: rgba(48, 164, 108, 0.2);
+    border: 2px solid var(--text-success);
+    color: var(--text-success);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .confirmation-intro {
+    color: var(--text-secondary);
+  }
+
+  .reference-box {
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-8);
+    padding: var(--space-200) var(--space-400);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-50);
+  }
+
+  .ref-label {
+    color: var(--text-tertiary);
+  }
+
+  .reference-code {
+    font-family: var(--font-mono);
+    color: var(--action-primary);
+    letter-spacing: 0.1em;
+  }
+
+  .next-steps-block {
+    text-align: left;
+    width: 100%;
+    background-color: var(--surface-secondary);
+    border-radius: var(--radius-12);
+    padding: var(--space-300);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-150, 12px);
+  }
+
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-150, 12px);
+    padding-left: var(--space-300);
+    color: var(--text-secondary);
+  }
+
+  .steps-list strong {
+    color: var(--text-primary);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: var(--space-200);
+    margin-top: var(--space-200);
+  }
+
+  .btn-primary {
+    background-color: var(--action-primary);
+    color: var(--text-inverted);
+    padding: var(--space-100) var(--space-300);
+    border-radius: var(--radius-8);
+    font-weight: 600;
+  }
+
+  .btn-secondary {
+    background-color: var(--surface-secondary);
+    border: 1px solid var(--border-control);
+    color: var(--text-primary);
+    padding: var(--space-100) var(--space-300);
+    border-radius: var(--radius-8);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    const display = document.getElementById('referenceCodeDisplay');
+    if (display) {
+      if (ref) {
+        display.textContent = ref;
+      } else {
+        const stored = sessionStorage.getItem('rentwheels.last_enquiry');
+        if (stored) {
+          try {
+            const data = JSON.parse(stored);
+            if (data.reference) display.textContent = data.reference;
+          } catch {
+            display.textContent = 'RW-PENDING';
+          }
+        }
+      }
+    }
+  });
+</script>
