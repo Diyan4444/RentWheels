@@ -1,0 +1,237 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Legacy Page Redirects (Permanent 301)
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/browse"
+  to = "/fleet"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/browse.html"
+  to = "/fleet"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about.html"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cart"
+  to = "/trip"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cart.html"
+  to = "/trip"
+  status = 301
+  force = true
+
+# Vehicle Detail Legacy Redirects
+[[redirects]]
+  from = "/royal_enfield"
+  to = "/vehicles/royal-enfield-classic-350"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/royal_enfield.html"
+  to = "/vehicles/royal-enfield-classic-350"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ktm_390"
+  to = "/vehicles/ktm-390-duke"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ktm_390.html"
+  to = "/vehicles/ktm-390-duke"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/bmw_gs"
+  to = "/vehicles/bmw-r-1250-gs"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/bmw_gs.html"
+  to = "/vehicles/bmw-r-1250-gs"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/honda_civic"
+  to = "/vehicles/honda-civic"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/honda_civic.html"
+  to = "/vehicles/honda-civic"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/toyota_rav4"
+  to = "/vehicles/toyota-rav4-hybrid"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/toyota_rav4.html"
+  to = "/vehicles/toyota-rav4-hybrid"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ford_mustang"
+  to = "/vehicles/ford-mustang-gt"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ford_mustang.html"
+  to = "/vehicles/ford-mustang-gt"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/vespa_gts"
+  to = "/vehicles/vespa-gts-300-hpe"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/vespa_gts.html"
+  to = "/vehicles/vespa-gts-300-hpe"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/yamaha_tmax"
+  to = "/vehicles/yamaha-tmax-tech-max"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/yamaha_tmax.html"
+  to = "/vehicles/yamaha-tmax-tech-max"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/honda_adv"
+  to = "/vehicles/honda-adv350"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/honda_adv.html"
+  to = "/vehicles/honda-adv350"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/volvo_bus"
+  to = "/vehicles/volvo-b8rle"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/volvo_bus.html"
+  to = "/vehicles/volvo-b8rle"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/mercedes_tourismo"
+  to = "/vehicles/mercedes-benz-tourismo"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/mercedes_tourismo.html"
+  to = "/vehicles/mercedes-benz-tourismo"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/thomas_bus"
+  to = "/vehicles/thomas-built-saf-t-liner-c2"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/thomas_bus.html"
+  to = "/vehicles/thomas-built-saf-t-liner-c2"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ford_f150"
+  to = "/vehicles/ford-f-150"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ford_f150.html"
+  to = "/vehicles/ford-f-150"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/kenworth_t680"
+  to = "/vehicles/kenworth-t680"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/kenworth_t680.html"
+  to = "/vehicles/kenworth-t680"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/rivian_r1t"
+  to = "/vehicles/rivian-r1t"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/rivian_r1t.html"
+  to = "/vehicles/rivian-r1t"
+  status = 301
+  force = true

@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy | RentWheels"
+  description="Privacy practices and data handling policies for RentWheels."
+  noindex={true}
+>
+  <div class="container legal-page-container">
+    <div class="draft-notice caption-2">
+      Draft pending owner legal review.
+    </div>
+
+    <h1 class="heading-2 page-title">Privacy Notice</h1>
+
+    <div class="legal-content body-3">
+      <h2>1. Information We Collect</h2>
+      <p>
+        When you submit a booking enquiry, we collect only the necessary contact details to process your request: full name, Indian mobile number, email address, preferred Mumbai pickup area, and trip vehicle selections.
+      </p>
+
+      <h2>2. Use of Local Storage</h2>
+      <p>
+        We use your browser's local storage solely to save your trip vehicle slugs and selected dates across page views on this device. We do not use third-party tracking cookies or sell personal data.
+      </p>
+
+      <h2>3. Data Transmission & Retention</h2>
+      <p>
+        Enquiries submitted through our forms are transmitted securely via Netlify Forms and forwarded to our internal team email (dailykarma1910@gmail.com). Information is retained only as long as needed to fulfill your booking enquiry.
+      </p>
+
+      <h2>4. Contact for Privacy Inquiries</h2>
+      <p>
+        For inquiries regarding your personal data, reach out directly to diyanshah2301@gmail.com.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page-container {
+    padding-top: var(--space-600);
+    padding-bottom: var(--space-900);
+    max-width: 800px;
+  }
+
+  .draft-notice {
+    background-color: rgba(209, 176, 0, 0.15);
+    border: 1px solid var(--color-yellow-500);
+    color: var(--color-yellow-500);
+    padding: var(--space-100) var(--space-200);
+    border-radius: var(--radius-8);
+    margin-bottom: var(--space-400);
+  }
+
+  .page-title {
+    color: var(--text-primary);
+    margin-bottom: var(--space-600);
+  }
+
+  .legal-content {
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-400);
+  }
+
+  .legal-content h2 {
+    color: var(--text-primary);
+    font-size: 18px;
+    margin-bottom: var(--space-100);
+  }
+
+  .legal-content p {
+    line-height: 1.6;
+  }
+</style>

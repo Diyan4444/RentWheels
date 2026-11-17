@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import VehicleCard from '../../components/VehicleCard.astro';
+import { vehicles } from '../../data/vehicles';
+import type { VehicleCategory } from '../../scripts/pricing';
+
+export function getStaticPaths() {
+  const categories: { param: string; cat: VehicleCategory; label: string }[] = [
+    { param: 'cars', cat: 'car', label: 'Cars' },
+    { param: 'bikes', cat: 'bike', label: 'Bikes' },
+    { param: 'scooters', cat: 'scooter', label: 'Scooters' },
+    { param: 'buses', cat: 'bus', label: 'Buses' },
+    { param: 'trucks', cat: 'truck', label: 'Trucks' },
+  ];
+
+  return categories.map(({ param, cat, label }) => ({
+    params: { category: param },
+    props: {
+      categoryKey: cat,
+      categoryLabel: label,
+      items: vehicles.filter((v) => v.category === cat),
+    },
+  }));
+}
+
+const { categoryKey, categoryLabel, items } = Astro.props;
+---
+
+<BaseLayout
+  title={`${categoryLabel} for Rent in Mumbai | RentWheels`}
+  description={`Browse verified ${categoryLabel.toLowerCase()} available for rent in Mumbai with indicative 24-hour pricing, transparent specs, and single-request booking enquiries.`}
+>
+  <div class="container category-page-container">
+    <nav class="breadcrumb-nav caption-2" aria-label="Breadcrumb">
+      <ol class="breadcrumb-list" role="list">
+        <li><a href="/fleet">Fleet</a></li>
+        <li aria-hidden="true">&rsaquo;</li>
+        <li aria-current="page">{categoryLabel}</li>
+      </ol>
+    </nav>
+
+    <div class="category-header">
+      <h1 class="heading-2">{categoryLabel} for Rent in Mumbai</h1>
+      <p class="body-3 category-intro">
+        Showing all {items.length} {categoryLabel.toLowerCase()} in our Mumbai fleet. Rates calculated per 24 hours.
+      </p>
+    </div>
+
+    <!-- Category Switcher Nav -->
+    <div class="category-pills-bar">
+      <a href="/fleet" class="pill-link">All Vehicles</a>
+      <a href="/fleet/cars" class={`pill-link ${categoryKey === 'car' ? 'is-active' : ''}`}>Cars</a>
+      <a href="/fleet/bikes" class={`pill-link ${categoryKey === 'bike' ? 'is-active' : ''}`}>Bikes</a>
+      <a href="/fleet/scooters" class={`pill-link ${categoryKey === 'scooter' ? 'is-active' : ''}`}>Scooters</a>
+      <a href="/fleet/buses" class={`pill-link ${categoryKey === 'bus' ? 'is-active' : ''}`}>Buses</a>
+      <a href="/fleet/trucks" class={`pill-link ${categoryKey === 'truck' ? 'is-active' : ''}`}>Trucks</a>
+    </div>
+
+    <!-- Grid -->
+    <div class="fleet-grid">
+      {items.map((v) => (
+        <VehicleCard vehicle={v} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .category-page-container {
+    padding-top: var(--space-400);
+    padding-bottom: var(--space-900);
+  }
+
+  .breadcrumb-nav {
+    margin-bottom: var(--space-300);
+  }
+
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-75);
+    list-style: none;
+    color: var(--text-tertiary);
+  }
+
+  .breadcrumb-list a {
+    color: var(--text-secondary);
+  }
+
+  .breadcrumb-list a:hover {
+    color: var(--action-primary);
+  }
+
+  .category-header {
+    margin-bottom: var(--space-400);
+  }
+
+  .category-intro {
+    color: var(--text-secondary);
+    margin-top: var(--space-75);
+  }
+
+  .category-pills-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-75);
+    margin-bottom: var(--space-400);
+    padding-bottom: var(--space-200);
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  .pill-link {
+    background-color: var(--surface-primary-subtle);
+    border: 1px solid var(--border-primary);
+    color: var(--text-secondary);
+    padding: var(--space-75) var(--space-200);
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .pill-link:hover {
+    border-color: var(--border-control);
+    color: var(--text-primary);
+  }
+
+  .pill-link.is-active {
+    background-color: var(--surface-secondary-subtle);
+    border-color: var(--action-primary);
+    color: var(--action-primary);
+  }
+
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-300);
+  }
+
+  @media (min-width: 640px) {
+    .fleet-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .fleet-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,419 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'RentWheels — Vehicle Rental Across Mumbai',
+  description = 'Rent cars, bikes, scooters, buses and trucks with one transparent booking enquiry. Transparent 24-hour pricing across Mumbai.',
+  noindex = false,
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString();
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="theme-color" content="#071522" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={siteConfig.name} />
+  </head>
+  <body>
+    <!-- Skip to main content landmark (A2, E3) -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- Floating Glass Pill Header -->
+    <header class="site-header" role="banner">
+      <div class="header-pill">
+        <!-- Brand Wordmark -->
+        <a href="/" class="brand-link" aria-label="RentWheels Home">
+          <span class="brand-wordmark">{siteConfig.name}</span>
+        </a>
+
+        <!-- Primary Navigation Links -->
+        <nav class="desktop-nav" aria-label="Primary Navigation">
+          <ul class="nav-list" role="list">
+            <li><a href="/fleet" class="nav-link">Fleet</a></li>
+            <li><a href="/about" class="nav-link">About</a></li>
+            <li><a href="/faq" class="nav-link">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <!-- Actions: Trip Badge Counter & Contact CTA -->
+        <div class="header-actions">
+          <a href="/trip" class="trip-pill-btn" id="headerTripBtn" aria-label="View trip staging">
+            <svg class="nav-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span class="trip-label">Trip</span>
+            <span class="trip-count-badge" id="headerTripCount" aria-hidden="true" style="display: none;">0</span>
+          </a>
+
+          <a href={`mailto:${siteConfig.contact.email}`} class="contact-pill-btn" aria-label="Contact via email">
+            <span>Enquire</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Landmark -->
+    <main id="main" role="main">
+      <slot />
+    </main>
+
+    <!-- Accessible Toast Live Region (C1) -->
+    <div id="toastRegion" class="toast-region" role="status" aria-live="polite"></div>
+
+    <!-- Site Footer Landmark -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="container footer-container">
+        <div class="footer-columns">
+          <div class="footer-brand">
+            <span class="brand-wordmark">{siteConfig.name}</span>
+            <p class="footer-tagline">
+              Curated vehicle rentals across cars, motorcycles, scooters, coaches, and trucks in Mumbai with transparent 24-hour billing.
+            </p>
+            {siteConfig.contact.email && (
+              <p class="footer-contact">
+                Enquiries: <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+              </p>
+            )}
+          </div>
+
+          <div class="footer-nav-col">
+            <span class="footer-col-title">Fleet</span>
+            <ul role="list">
+              <li><a href="/fleet/cars">Cars</a></li>
+              <li><a href="/fleet/bikes">Bikes</a></li>
+              <li><a href="/fleet/scooters">Scooters</a></li>
+              <li><a href="/fleet/buses">Buses</a></li>
+              <li><a href="/fleet/trucks">Trucks</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-nav-col">
+            <span class="footer-col-title">Company</span>
+            <ul role="list">
+              <li><a href="/about">About</a></li>
+              <li><a href="/faq">FAQ</a></li>
+              <li><a href="/fleet">Complete Fleet</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-nav-col">
+            <span class="footer-col-title">Terms & Privacy</span>
+            <ul role="list">
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/privacy">Privacy Notice</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="copyright">&copy; {currentYear} {siteConfig.name}. All rights reserved.</p>
+          {siteConfig.demoMode && (
+            <p class="demo-notice">
+              Demonstration mode active. Booking requests are submitted through Netlify Forms; online payments and instant reservations are not processed.
+            </p>
+          )}
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  /* ==========================================================================
+     Floating Glass Pill Header — Refined Architectural Proportions
+     ========================================================================== */
+  .site-header {
+    position: sticky;
+    top: 16px;
+    z-index: 1000;
+    width: 100%;
+    padding: 0 var(--space-200);
+    pointer-events: none;
+  }
+
+  .header-pill {
+    pointer-events: auto;
+    max-width: 960px;
+    margin: 0 auto;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-200);
+    background: rgba(4, 25, 39, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(120, 210, 230, 0.14);
+    border-radius: var(--radius-full);
+    padding: 0 8px 0 20px;
+    box-shadow: 0 10px 32px rgba(2, 10, 18, 0.5), 0 0 16px rgba(18, 184, 208, 0.08);
+    transition: border-color var(--duration-color) var(--ease-base),
+      box-shadow var(--duration-color) var(--ease-base);
+  }
+
+  .header-pill:hover {
+    border-color: rgba(120, 210, 230, 0.25);
+    box-shadow: 0 12px 36px rgba(2, 10, 18, 0.65), 0 0 20px rgba(18, 184, 208, 0.12);
+  }
+
+  /* Brand */
+  .brand-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+
+  .brand-wordmark {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+  }
+
+  /* Nav Links */
+  .desktop-nav {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .desktop-nav {
+      display: block;
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-color) var(--ease-base);
+    letter-spacing: -0.01em;
+  }
+
+  .nav-link:hover {
+    color: var(--text-primary);
+  }
+
+  /* Header Actions */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .trip-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 42, 61, 0.6);
+    border: 1px solid rgba(120, 210, 230, 0.12);
+    border-radius: var(--radius-full);
+    padding: 0 12px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .trip-pill-btn:hover {
+    background: rgba(7, 83, 106, 0.5);
+    color: var(--text-primary);
+    border-color: rgba(120, 210, 230, 0.25);
+  }
+
+  .nav-icon {
+    color: var(--color-cyan-bright);
+  }
+
+  .trip-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--action-primary);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: var(--radius-full);
+  }
+
+  .contact-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--action-primary);
+    border-radius: var(--radius-full);
+    padding: 0 15px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(36, 99, 235, 0.35);
+    transition: all var(--duration-color) var(--ease-base);
+  }
+
+  .contact-pill-btn:hover {
+    background: var(--action-primary-hover);
+    box-shadow: 0 4px 16px rgba(36, 99, 235, 0.5);
+  }
+
+  /* ==========================================================================
+     Site Footer — Minimalist Architectural Grounding
+     ========================================================================== */
+  .site-footer {
+    background-color: #030a10;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: var(--space-800) 0 var(--space-600);
+    margin-top: var(--space-900);
+  }
+
+  .footer-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-500);
+    margin-bottom: var(--space-600);
+  }
+
+  @media (min-width: 768px) {
+    .footer-columns {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-600);
+    }
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-150, 12px);
+  }
+
+  .footer-tagline {
+    color: var(--text-tertiary);
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 320px;
+    margin: 0;
+  }
+
+  .footer-contact {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin: 0;
+  }
+
+  .footer-contact a {
+    color: var(--color-cyan-bright);
+    text-decoration: none;
+  }
+
+  .footer-col-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    margin-bottom: var(--space-150, 12px);
+    display: block;
+  }
+
+  .footer-nav-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-nav-col a {
+    color: var(--text-tertiary);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color var(--duration-color) var(--ease-base);
+  }
+
+  .footer-nav-col a:hover {
+    color: var(--text-primary);
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-400);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    align-items: flex-start;
+  }
+
+  .copyright {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    margin: 0;
+  }
+
+  .demo-notice {
+    color: rgba(169, 189, 204, 0.6);
+    font-size: 11px;
+    line-height: 1.5;
+    max-width: 680px;
+    margin: 0;
+  }
+</style>
+
+<script>
+  import { syncTripHeaderCount } from '../scripts/trip';
+
+  window.addEventListener('DOMContentLoaded', () => {
+    syncTripHeaderCount();
+  });
+  window.addEventListener('rentwheels:trip-updated', () => {
+    syncTripHeaderCount();
+  });
+  window.addEventListener('storage', () => {
+    syncTripHeaderCount();
+  });
+</script>
